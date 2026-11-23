@@ -116,18 +116,21 @@ python tools/build_test_copy.py && python tests/test_hosted.py   # the single-fi
 
 ## Publishing
 
-Nothing is published yet. When the domain is ready:
+The site is published with **Cloudflare Pages** at https://pn-digital-website.pages.dev, connected to this repository:
+every push to `main` goes live automatically (no build command; output folder `public`).
 
-1. Replace the placeholder `https://pn-digital.example` everywhere in `public/` (canonical links, `hreflang`, share images, `sitemap.xml`, `robots.txt`).
-2. Publish the **`public`** folder with Cloudflare Pages (or any static host). No build command is needed; the output folder is `public`.
-3. Add the new address to `allowedOrigins` in the AI assistant engine.
+If the address changes (for example a custom domain later):
+
+1. Replace `https://pn-digital-website.pages.dev` everywhere in `public/` (canonical links, `hreflang`, share images, `sitemap.xml`, `robots.txt`).
+2. Add the new address to `allowedOrigins` in every business file of the AI assistant engine, export, and redeploy the engine.
 
 See [`docs/PROGRESS.md`](docs/PROGRESS.md) for the full status and to-do list.
 
 ## Status
 
 - ✅ English and Greek, portfolio, live previews, quote calculator, contact, AI assistant (demo mode), share images
-- ⏳ Real domain and publishing · native-speaker review of the Greek · real photography and client reviews (once there are clients)
+- ✅ Published on Cloudflare Pages (pages.dev address) · AI assistant engine deployed on Cloudflare Workers
+- ⏳ Optional custom domain · native-speaker review of the Greek · real photography and client reviews (once there are clients)
 
 ---
 

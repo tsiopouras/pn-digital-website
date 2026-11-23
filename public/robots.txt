@@ -2,5 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /demos/
 
-# PLACEHOLDER domain - replace when the real domain is confirmed
-Sitemap: https://pn-digital.example/sitemap.xml
+Sitemap: https://pn-digital-website.pages.dev/sitemap.xml

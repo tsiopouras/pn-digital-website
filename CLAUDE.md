@@ -29,5 +29,6 @@ Run the browser tests after changes (see README → Tests). `tests/test_site.py`
 text left on Greek pages. Look at the result in a browser at phone and desktop sizes before saying something is done.
 
 ## Still to do
-See `docs/PROGRESS.md`. Main items: the real domain (replace `https://pn-digital.example`), publishing on Cloudflare
-Pages after approval, a native-speaker check of the Greek, real photos and real client reviews when available.
+See `docs/PROGRESS.md`. The site is live on Cloudflare Pages at `https://pn-digital-website.pages.dev`; every push to `main`
+goes live, so only push to `main` with the owner's approval. Remaining: an optional custom domain, and real client reviews
+when available. The owner is a native Greek speaker and checks the Greek; no founder photo (owner's decision).

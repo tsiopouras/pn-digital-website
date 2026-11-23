@@ -56,6 +56,20 @@ CASES = [  # page, lang, question, must contain (any of), must not contain
 try:
   with sync_playwright() as pw:
     br = pw.chromium.launch(args=['--no-sandbox'])
+    # The published packs point at the real engine. Tests never call it: every page gets the packs with the endpoint
+    # replaced (empty = demo mode, or a local mock engine for the live-mode checks).
+    _new_context = br.new_context
+    def new_context(endpoint='', **kw):
+      c = _new_context(**kw)
+      def serve(route, request):
+        name = request.url.split('?')[0].rsplit('/', 1)[-1]
+        src = open(f'{SITE}/assets/assistant/packs/{name}', encoding='utf-8').read()
+        route.fulfill(status=200, content_type='application/javascript', body=re.sub(r'"endpoint":"[^"]*"', '"endpoint":' + json.dumps(endpoint), src))
+      c.route('**/assets/assistant/packs/*.js', serve)
+      return c
+    br.new_context = new_context
+    packs = {n: open(f'{SITE}/assets/assistant/packs/{n}', encoding='utf-8').read() for n in os.listdir(f'{SITE}/assets/assistant/packs')}
+    chk('published packs all point at the deployed engine over https', packs and all(re.search(r'"endpoint":"https://[^"]+/chat"', s) for s in packs.values()), {n: re.findall(r'"endpoint":"[^"]*"', s) for n, s in packs.items()})
     # ---- demo mode answers (every business, both languages)
     for (w, h) in ((1440, 900), (390, 844)):
       c = br.new_context(viewport={'width': w, 'height': h}); p = c.new_page(); errs = []
@@ -139,11 +153,7 @@ try:
       c.close()
     # ---- LIVE mode end to end: widget -> real engine -> fake Claude (streamed)
     def live_ctx(endpoint):
-      c = br.new_context(viewport={'width': 1440, 'height': 900})
-      for bid in ('pn-digital', 'olive-and-oak'):
-        src = open(f'{SITE}/assets/assistant/packs/{bid}.js', encoding='utf-8').read().replace('"endpoint":""', f'"endpoint":"{endpoint}"')
-        c.route(f'**/assets/assistant/packs/{bid}.js', lambda route, request, s=src: route.fulfill(status=200, content_type='application/javascript', body=s))
-      return c
+      return br.new_context(endpoint=endpoint, viewport={'width': 1440, 'height': 900})
     c = live_ctx(f'http://127.0.0.1:{ENG}/chat'); p = c.new_page(); errs = []; p.on('pageerror', lambda e: errs.append(str(e)))
     p.goto(O + '/'); p.wait_for_timeout(500); openw(p)
     n = txt(p, '.note')

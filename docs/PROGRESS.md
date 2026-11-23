@@ -28,7 +28,7 @@ The original generator scripts no longer exist. Edit the files in this folder di
 - Contact form (EN/EL) with validation. "Send on WhatsApp" and "Send by email" open the visitor's own app with the message ready. Nothing is sent or stored by the site, and no outside form service is used.
 - Quote calculator on Services (#quote), linked from the homepage pricing. It only uses the published prices (Starter €250, Business €450, Premium from €750, maintenance €50/month) and the language counts. Extra languages, integrations and the AI assistant show as "quoted separately". The estimate can be sent on WhatsApp, by email, or carried into the contact form.
 - "How we built it" on all six project pages: a wireframe/finished comparison slider (screenshots in images/build/, the wireframe is generated from the real page), five measured stats and a six-step build story. Stats come from the demo files; re-measure if a demo changes.
-- Social share image (assets/og/og-en.jpg, og-el.jpg, 1200×630) on every page. It only works once the real domain replaces pn-digital.example in the og:image and canonical tags.
+- Social share image (assets/og/og-en.jpg, og-el.jpg, 1200×630) on every page. It uses the live address https://pn-digital-website.pages.dev in the og:image and canonical tags.
 
 ## Language guarantee
 - Homepage and Services (English and Greek) now have a "Language guarantee" section: websites in any language, including right-to-left languages, with a scrolling strip of language names in their own scripts (stops for reduced-motion users).
@@ -40,6 +40,10 @@ The original generator scripts no longer exist. Edit the files in this folder di
 - It runs in clearly labelled DEMO MODE: answers come only from the website's own information and nothing is sent. Real AI needs the separate engine (ai-assistant zip) deployed with an API key, which needs your approval and has usage costs. Steps: ai-assistant/README.md.
 - To change what an assistant knows, edit ai-assistant/businesses/<id>.json and run `node tools/export-public.mjs`; do not edit the packs by hand.
 - The P&N Digital assistant is set to Google Gemini 3.5 Flash-Lite (free tier), capped at 400 requests a day. Its live-mode note says Google may keep messages. The three demo assistants stay on Claude (paid) and remain in demo mode until a Claude key is added. Nothing is switched on yet: it needs a Gemini key and a Cloudflare account, both with your approval.
+
+## Published (2026-11-23)
+- Website live on Cloudflare Pages: https://pn-digital-website.pages.dev (connected to GitHub; every push to `main` deploys).
+- AI assistant engine deployed by the owner as the Worker `pn-digital-assistant` (https://pn-digital-assistant.tsiopou3.workers.dev) with the GEMINI_API_KEY secret. The P&N Digital chat is live; the three demos stay in demo mode (no Claude key). The USAGE KV namespace (400/day cap) is NOT set up yet.
 
 ## NOT done
 - Owner decision (2026-11-23): no founder photo. The photo placeholder and its note were removed from the "One person" section (EN + EL); the section is now one column. The owner is a native Greek speaker and will review the Greek.
