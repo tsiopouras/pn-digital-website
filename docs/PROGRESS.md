@@ -42,6 +42,7 @@ The original generator scripts no longer exist. Edit the files in this folder di
 - The P&N Digital assistant is set to Google Gemini 3.5 Flash-Lite (free tier), capped at 400 requests a day. Its live-mode note says Google may keep messages. The three demo assistants stay on Claude (paid) and remain in demo mode until a Claude key is added. Nothing is switched on yet: it needs a Gemini key and a Cloudflare account, both with your approval.
 
 ## NOT done
+- Owner decision (2026-11-23): no founder photo. The photo placeholder and its note were removed from the "One person" section (EN + EL); the section is now one column. The owner is a native Greek speaker and will review the Greek.
 2. Pictures and reviews for the agency site (drawn mockups and a placeholder founder photo are used). No real photography (no internet in the build environment). Real reviews must come from real clients.
 3. Native-speaker review of all Greek. Prompt extras: browser toolbar in the preview modal, Open Graph image, real domain and contact details, Cloudflare deployment (needs your login and approval).
 
