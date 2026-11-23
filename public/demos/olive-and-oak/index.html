@@ -1,0 +1,277 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><link rel="icon" href="data:,">
+<title>Olive &amp; Oak (demo)</title><meta name="description" content="Demonstration website for a fictional Mediterranean restaurant, made by P&amp;N Digital.">
+<style>
+:root{--bg:#1b1e20;--fg:#f3ede0;--mut:#b4aea0;--ac:#b8935c;--ol:#8a9660;--line:#363b3e;--ink:#1d2124;--hf:Georgia,"Times New Roman",serif;--bf:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:1rem/1.65 var(--bf)}a{color:inherit}
+.skip{position:absolute;left:-999px;top:0}.skip:focus{left:1rem;top:1rem;z-index:99;background:var(--fg);color:var(--ink);padding:.5rem 1rem}
+:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
+header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem 1rem;padding:.9rem 1.25rem;position:sticky;top:0;z-index:5;background:#1b1e20;border-bottom:1px solid var(--line)}
+.logo{font:600 1.45rem var(--hf);text-decoration:none}.logo i{color:var(--ac);font-style:normal}
+nav{display:flex;gap:1.4rem;align-items:center}
+nav a{position:relative;text-decoration:none;padding:.3rem 0}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+nav a:hover::after,nav a[aria-current]::after{transform:scaleX(1)}
+nav a.cta{background:var(--ac);color:var(--ink);padding:.45rem 1rem;font-weight:600}nav a.cta::after{display:none}
+.mb{display:none;font:inherit;color:inherit;background:none;border:1px solid var(--line);padding:.35rem .8rem;cursor:pointer}
+@media(max-width:700px){.mb{display:block}nav{display:block;width:100%;max-height:0;overflow:hidden;visibility:hidden;transition:max-height .4s,visibility 0s .4s}nav.open{max-height:28rem;visibility:visible;transition-delay:0s}nav a{display:block;padding:.75rem 0}nav a.cta{display:inline-block;margin:.5rem 0 1rem}}
+main{outline:0}.w{max-width:64rem;margin:0 auto}.s{padding:clamp(3rem,8vw,5.5rem) 1.25rem}
+.lt{background:var(--fg);color:var(--ink)}.lt .mut{color:#555}
+h1,h2,h3{font-family:var(--hf);font-weight:500;line-height:1.1;margin:0 0 .5em}
+h1{font-size:clamp(2.6rem,8vw,5rem);max-width:13ch}h2{font-size:clamp(1.8rem,4.5vw,2.8rem)}h3{font-size:1.2rem}
+p{margin:0 0 1em;max-width:62ch}.mut{color:var(--mut)}.eyebrow{font-size:.85rem;color:var(--ac);margin:0 0 1rem}
+.btn{display:inline-block;padding:.8rem 1.4rem;background:var(--ac);color:var(--ink);border:2px solid var(--ac);font:600 1rem var(--bf);text-decoration:none;cursor:pointer;margin:0 .6rem .6rem 0;transition:transform .25s,background .25s}
+.btn:hover{transform:translateY(-2px);background:#cdab75}.btn.o{background:none;color:inherit;border-color:currentColor}.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none}
+.hero{position:relative;overflow:hidden;min-height:min(82vh,46rem);display:grid;align-items:center;background:radial-gradient(48rem 28rem at 85% 15%,rgba(184,147,92,.25),transparent),radial-gradient(36rem 26rem at 5% 95%,rgba(138,150,96,.2),transparent),var(--bg)}
+.hero .art{position:absolute;right:-4rem;top:50%;width:min(38rem,70vw);opacity:.9;transform:translateY(-50%)}
+.hero .w{position:relative}@media(max-width:700px){.hero .art{opacity:.14;width:80vw;right:-30vw}}
+.ph{display:block;width:100%;aspect-ratio:4/3;background:#2a2e30;position:relative;overflow:hidden}.ph svg{width:100%;height:100%;display:block;transition:transform .6s}.ph:hover svg{transform:scale(1.06)}
+.ph b{position:absolute;left:.6rem;bottom:.5rem;font:500 .72rem var(--bf);color:#d8d2c3;background:rgba(0,0,0,.45);padding:.1rem .45rem}
+.cols{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
+.dish{display:flex;flex-direction:column;text-align:left;font:inherit;color:var(--fg);background:#23272a;border:1px solid var(--line);padding:1rem;cursor:pointer;transition:transform .3s,border-color .3s}
+.dish:hover{transform:translateY(-4px);border-color:var(--ac)}.dish .art{display:block;width:6.5rem;margin:0 0 .8rem;transition:transform .5s}.dish:hover .art{transform:scale(1.08) rotate(-4deg)}
+.dish .nm{font:500 1.15rem var(--hf)}.dish .ds{color:var(--mut);font-size:.92rem;flex:1;margin:.3rem 0 .6rem}.dish .pr{font-weight:600;color:var(--ac)}
+.lab{display:inline-block;font:600 .7rem var(--bf);border:1px solid currentColor;padding:0 .35rem;margin-right:.3rem;color:var(--ol)}
+.lt .dish{background:#fff;color:var(--ink);border-color:#ddd5c4}.lt .lab{color:#56603a}.lt .dish .ds{color:#555}.lt .dish .pr{color:#7a5a24}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1rem}
+.chips button{font:inherit;color:var(--fg);background:none;border:1px solid var(--line);padding:.45rem 1rem;cursor:pointer;transition:background .25s,border-color .25s,color .25s}
+.chips button:hover{border-color:var(--ac)}.chips [aria-pressed=true],.opt[aria-pressed=true]{background:var(--ac);color:var(--ink);border-color:var(--ac)}
+.quote{border-left:3px solid var(--ac);padding-left:1rem}.quote p{font:italic 1.1rem var(--hf)}
+.faq{border-top:1px solid #cfc7b5}.faq h3{margin:0}
+.faq button.q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;font:500 1.15rem var(--hf);color:inherit;background:none;border:0;border-bottom:1px solid #cfc7b5;padding:1.1rem 0;text-align:left;cursor:pointer}
+.pm{position:relative;width:1.1rem;height:1.1rem;flex:none}.pm::before,.pm::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:currentColor;transition:transform .35s}.pm::after{transform:rotate(90deg)}
+.open .pm::after{transform:rotate(0)}
+.faq .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease;border-bottom:1px solid #cfc7b5}.faq .a>div{overflow:hidden;visibility:hidden;transition:visibility 0s .35s}
+.open .a{grid-template-rows:1fr}.open .a>div{visibility:visible;transition-delay:0s}.faq .a p{margin:0;padding:0 0 1.1rem;color:#444}
+.note{border-left:4px solid var(--ac);padding:.4rem 0 .4rem 1rem;color:var(--mut);margin:1rem 0;max-width:62ch}.lt .note{color:#555}
+.wiz{max-width:42rem;margin:0 auto}.prog{display:flex;gap:.4rem;list-style:none;padding:0;margin:0 0 .6rem}.prog li{flex:1;height:4px;background:var(--line);transition:background .4s}.prog .on{background:var(--ac)}
+.stp{animation:stepin .45s both}#wiz{scroll-margin-top:5.5rem}.stp h2:focus{outline:0}
+.stepper{display:flex;align-items:center;gap:1.2rem;margin:1rem 0}.stepper button{width:3rem;height:3rem;font-size:1.5rem;border:1px solid var(--line);background:none;color:var(--fg);cursor:pointer;transition:border-color .2s}.stepper button:hover{border-color:var(--ac)}.stepper output{font:500 2.4rem var(--hf);min-width:2ch;text-align:center}
+.opts{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));margin:1rem 0}
+.opt{font:inherit;color:var(--fg);background:none;border:1px solid var(--line);padding:.7rem .5rem;cursor:pointer;text-align:center;transition:background .25s,border-color .25s}.opt:hover:not([disabled]){border-color:var(--ac)}.opt[disabled]{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.f{display:grid;gap:.3rem;margin:0 0 1rem}.f input,.f select,.f textarea{font:inherit;color:var(--fg);background:#23272a;border:1px solid var(--line);padding:.7rem;width:100%}.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--ac)}
+.err{color:#ff9d8f;margin:.5rem 0}.sum{display:grid;grid-template-columns:8rem 1fr auto;gap:.5rem 1rem;margin:1rem 0;align-items:baseline}.sum dt{color:var(--mut)}.sum dd{margin:0}.sum button{font:inherit;color:var(--ac);background:none;border:0;text-decoration:underline;cursor:pointer}
+.nav2{display:flex;gap:.8rem;margin-top:1.5rem;flex-wrap:wrap}
+dl.h{display:grid;grid-template-columns:9rem 1fr;gap:.4rem 1rem}dl.h dt{color:var(--mut)}dl.h dd{margin:0}
+dialog{border:1px solid var(--line);background:#23272a;color:var(--fg);padding:1.5rem;width:min(92vw,30rem)}dialog::backdrop{background:rgba(0,0,0,.65)}
+footer{padding:2.5rem 1.25rem;border-top:1px solid var(--line);color:var(--mut);font-size:.9rem}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}@keyframes stepin{from{opacity:0;transform:translateX(14px)}}@keyframes rise{from{opacity:0;transform:translateY(22px)}}@keyframes pop{from{opacity:0;transform:scale(.97)}}
+@media(prefers-reduced-motion:no-preference){[data-p]{animation:in .5s both}.hero h1,.hero p,.hero .a2{animation:rise .9s cubic-bezier(.2,.7,.2,1) backwards}.hero p{animation-delay:.12s}.hero .a2{animation-delay:.26s}.hero .art{animation:rise 1.2s .2s backwards}dialog[open]{animation:pop .25s}
+.rv .rev{opacity:0}.rv .rev.in{opacity:1;animation:rise .75s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0)*80ms)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+.lg{display:flex;border:1px solid var(--line);margin-left:.3rem}.lg button{font:600 .8rem var(--bf);color:var(--fg);background:none;border:0;padding:.45rem .7rem;min-width:2.75rem;min-height:2.5rem;cursor:pointer;transition:background .2s,color .2s}.lg button[aria-pressed=true]{background:var(--fg);color:var(--bg)}.lg button:hover:not([aria-pressed=true]){color:var(--ac)}@media(max-width:700px){.lg{width:max-content;margin:.4rem 0 1rem}}</style></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a class="logo" href="#home">Olive <i>&amp;</i> Oak</a><button class="mb" type="button" aria-expanded="false" aria-controls="nv">Menu</button>
+<nav id="nv" aria-label="Main"><a href="#home">Home</a><a href="#menu">Menu</a><a href="#reserve" class="cta">Reserve a table</a><div class="lg" role="group" aria-label="Language"><button type="button" data-l="en" lang="en" aria-pressed="true">EN</button><button type="button" data-l="el" lang="el" aria-pressed="false">ΕΛ</button></div></nav></header>
+<main id="main" tabindex="-1">
+<div data-p="home" data-t="Home">
+<section class="hero s"><svg class="art" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="58" fill="#26292b"/><circle cx="60" cy="60" r="48" fill="#ece4d2"/><circle cx="60" cy="60" r="36" fill="#8a9660"/><circle cx="52" cy="50" r="9" fill="#b8935c"/><circle cx="72" cy="66" r="7" fill="#c9553f"/><circle cx="62" cy="74" r="5" fill="#f3ede0"/></svg>
+<div class="w"><p class="eyebrow">Demonstration restaurant · fictional</p><h1>A Taste of the Mediterranean.</h1><p class="mut">Olive &amp; Oak is an invented restaurant made by P&amp;N Digital to show what a restaurant website can do: a menu you can filter, a reservation flow you can walk through and answers to the questions guests ask.</p><p class="a2"><a class="btn" href="#reserve">Reserve a table</a><a class="btn o" href="#menu">Explore Our Menu</a></p></div></section>
+<section class="s lt"><div class="w"><p class="eyebrow" style="color:#7a5a24">Our story (sample copy)</p><h2 class="rev">Cooked simply, shared slowly.</h2><p class="mut rev">Olive &amp; Oak is fictional, so it has no real history. This sample copy shows how a story section can carry a restaurant’s voice: olive oil, citrus, herbs and the sea, cooked with patience.</p>
+<div class="cols" id="atm"></div></div></section>
+<section class="s"><div class="w"><p class="eyebrow">Signature dishes</p><h2 class="rev">The plates we would put first.</h2><div class="grid" id="g-sig"></div><p class="note">Dishes and prices are fictional demonstration content. Illustrations stand in for photography.</p></div></section>
+<section class="s lt"><div class="w"><p class="eyebrow" style="color:#7a5a24">Chef’s recommendations</p><h2 class="rev">Ask the kitchen.</h2><div class="grid" id="g-chef"></div><p class="eyebrow" style="color:#7a5a24;margin-top:3rem">Seasonal specials</p><h2 class="rev">What the market offers now.</h2><div class="grid" id="g-season"></div></div></section>
+<section class="s"><div class="w"><p class="eyebrow">Gallery</p><h2 class="rev">From the pass to the table.</h2><div class="cols" id="gal"></div></div></section>
+<section class="s lt"><div class="w"><p class="eyebrow" style="color:#7a5a24">Sample testimonials (fictional)</p><h2 class="rev">What guests might say.</h2><div class="cols">
+<div class="quote rev"><p>“The lamb fell off the bone and the terrace was perfect at sunset.”</p><span class="mut">Sample guest A, fictional</span></div><div class="quote rev" style="--i:1"><p>“Easy to book, and they remembered my vegan request.”</p><span class="mut">Sample guest B, fictional</span></div><div class="quote rev" style="--i:2"><p>“We celebrated a birthday here and nothing felt rushed.”</p><span class="mut">Sample guest C, fictional</span></div></div></div></section>
+<section class="s"><div class="w"><div class="cols"><div class="rev"><h2>Special occasions</h2><p class="mut">Birthdays, anniversaries and family gatherings. Tell us in the reservation notes and we would prepare the table. (Demonstration copy.)</p></div><div class="rev" style="--i:1"><h2>Private dining</h2><p class="mut">A fictional private room for groups. A real restaurant would list capacity and menus here; this demo shows the layout only.</p><a class="btn o" href="#reserve">Ask about a group booking</a></div></div></div></section>
+<section class="s lt"><div class="w"><div class="cols"><div><h2 class="rev">Opening hours</h2><dl class="h"><dt>Tuesday–Sunday</dt><dd>18:00–22:30 (demonstration)</dd><dt>Monday</dt><dd>Closed (demonstration)</dd></dl><p class="note">Hours are fictional placeholders.</p></div><div><h2 class="rev">Find us</h2><dl class="h"><dt>Address</dt><dd>[placeholder address]</dd><dt>Telephone</dt><dd>[placeholder]</dd><dt>Email</dt><dd>[placeholder]</dd><dt>Parking</dt><dd>[placeholder]</dd></dl></div></div></div></section>
+<section class="s lt" style="padding-top:0"><div class="w"><p class="eyebrow" style="color:#7a5a24">Questions</p><h2 class="rev">Good to know before you visit.</h2><div class="faq" id="faq"></div></div></section>
+<section class="s"><div class="w"><h2 class="rev">Save your table.</h2><p class="mut">Walk through the demonstration reservation. Nothing is booked or sent.</p><a class="btn" href="#reserve">Reserve a table</a></div></section>
+</div>
+<div data-p="menu" data-t="Menu" hidden><section class="s"><div class="w"><p class="eyebrow">The menu</p><h1>Menu</h1>
+<p class="note">Demonstration menu: dishes, prices and dietary labels are fictional. A real restaurant must confirm allergens.</p>
+<div class="chips" id="cats" role="group" aria-label="Categories"></div>
+<div class="chips" id="diet" role="group" aria-label="Dietary filters"><button type="button" data-d="v" aria-pressed="false">Vegetarian</button><button type="button" data-d="vg" aria-pressed="false">Vegan</button><button type="button" data-d="gf" aria-pressed="false">Gluten-free</button></div>
+<p id="count" class="mut" role="status"></p><div class="grid" id="g-menu"></div></div></section></div>
+<div data-p="reserve" data-t="Reserve" hidden><section class="s"><div class="wiz"><p class="eyebrow">Reservations</p><p class="note" style="margin-top:0">Demonstration only. The restaurant and this booking flow are fictional. Nothing is booked or sent.</p><div id="wiz"></div></div></section></div>
+</main>
+<footer>Demonstration website by P&amp;N Digital. Olive &amp; Oak is a fictional business: names, dishes, prices, hours and details are invented, and nothing on this site is sent anywhere. Illustrations stand in for photography.</footer>
+<dialog id="dlg" aria-labelledby="dt"><div id="dc"></div><p style="margin-top:1rem"><button class="btn o" type="button" id="dx">Close</button></p></dialog>
+<script>
+(function(){
+var D=[['halloumi','starters','Grilled halloumi, thyme honey','Squeaky halloumi scorched on the grill with thyme honey.',9,'v,gf','sig','#d9b45a'],
+['salad','starters','Tomato, caper and oregano salad','Ripe tomatoes, capers and wild oregano with olive oil.',8,'vg,gf','','#c9553f'],
+['hummus','starters','Hummus, warm pita, olive oil','Silky chickpea purée with warm pita and grassy olive oil.',7,'vg','','#c8a46a'],
+['lamb','mains','Slow-braised lamb, lemon potatoes','Lamb shoulder braised slowly with lemon and oregano.',22,'gf','sig,chef','#9a5a3c'],
+['chicken','mains','Herb-roasted chicken, charred greens','Herb-rubbed chicken with greens from the grill.',19,'gf','','#c98c4b'],
+['aubergine','mains','Roasted aubergine, tahini, pomegranate','Smoky aubergine, tahini and pomegranate.',17,'vg,gf','season','#6b4a7a'],
+['bream','seafood','Sea bream, fennel and citrus','Whole bream with shaved fennel and citrus.',24,'gf','chef','#7fb0b0'],
+['octopus','seafood','Grilled octopus, smoked paprika','Tender octopus finished over the grill.',21,'gf','','#b0553f'],
+['prawns','seafood','Prawn saganaki, tomato and feta','Prawns in a tomato sauce with feta.',23,'','','#d0714f'],
+['tagliatelle','pasta','Tagliatelle, wild mushroom, thyme','Fresh tagliatelle with mushrooms and thyme.',16,'v','season','#8a7355'],
+['spaghetti','pasta','Spaghetti, lemon, garlic, chilli','Spaghetti with lemon, garlic and a little heat.',14,'vg','','#d9c35a'],
+['orzo','pasta','Orzo, slow tomato, basil','Orzo in a slow-cooked tomato and basil sauce.',15,'vg','','#c0473a'],
+['panna','desserts','Orange blossom panna cotta','Soft panna cotta scented with orange blossom.',8,'v,gf','sig,chef','#e6c79a'],
+['cake','desserts','Honey and walnut cake','Moist cake with local honey and walnuts.',7,'v','','#b98a4a'],
+['fruit','desserts','Seasonal fruit, mint yoghurt','Fruit of the moment with mint yoghurt.',7,'v,gf','season','#d46a6a'],
+['lemonade','drinks','Fresh lemonade with mint','Pressed lemon and mint.',4,'vg,gf','','#d9d36a'],
+['coffee','drinks','Cypriot coffee','Brewed slowly, served unfiltered.',3,'vg,gf','','#5a3d2b'],
+['water','drinks','Sparkling water','For the table.',3,'vg,gf','','#a8c8d8']];
+var CATS=[['all','All'],['starters','Starters'],['mains','Main courses'],['seafood','Seafood'],['pasta','Pasta'],['desserts','Desserts'],['drinks','Drinks']];
+function $(s,r){return (r||document).querySelector(s)}function $$(s,r){return [].slice.call((r||document).querySelectorAll(s))}
+function plate(c){return '<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="#2a2e30"/><circle cx="60" cy="60" r="46" fill="#e9e1cf"/><circle cx="60" cy="60" r="33" fill="'+c+'"/><circle cx="49" cy="52" r="7" fill="rgba(255,255,255,.2)"/><circle cx="72" cy="68" r="5" fill="rgba(0,0,0,.2)"/></svg>'}
+function labels(f){return f.split(',').filter(Boolean).map(function(x){return '<span class="lab" title="'+({v:'Vegetarian',vg:'Vegan',gf:'Gluten-free'})[x]+'">'+({v:'V',vg:'VG',gf:'GF'})[x]+'</span>'}).join('')}
+function card(d,i){return '<button type="button" class="dish rev" style="--i:'+(i%4)+'" data-id="'+d[0]+'"><span class="art">'+plate(d[7])+'</span><span class="nm">'+d[2]+'</span><span class="ds">'+d[3]+'</span><span><span class="pr">€'+d[4]+'</span> '+labels(d[5])+'</span></button>'}
+function fill(id,fn){$('#'+id).innerHTML=D.filter(fn).map(card).join('')}
+fill('g-sig',function(d){return /sig/.test(d[6])});fill('g-chef',function(d){return /chef/.test(d[6])});fill('g-season',function(d){return /season/.test(d[6])});
+$('#atm').innerHTML=[['The room','#8a9660'],['The terrace','#b8935c'],['The kitchen','#c9553f']].map(function(x,i){return '<div class="rev" style="--i:'+i+'"><span class="ph">'+plate(x[1])+'<b>Illustration · '+x[0]+'</b></span><h3 style="margin-top:.8rem">'+x[0]+'</h3></div>'}).join('');
+$('#gal').innerHTML=[['Table setting','#d9b45a'],['Fresh ingredients','#c9553f'],['The terrace','#8a9660'],['Dessert','#e6c79a'],['Wine list','#7a3c4a'],['The pass','#7fb0b0']].map(function(x,i){return '<button type="button" class="ph rev" style="--i:'+(i%3)+';border:0;padding:0;cursor:pointer" data-g="'+x[0]+'|'+x[1]+'" aria-label="Enlarge: '+x[0]+'">'+plate(x[1])+'<b>Illustration · '+x[0]+'</b></button>'}).join('');
+// menu
+var cat='all',dt={};
+$('#cats').innerHTML=CATS.map(function(c){return '<button type="button" data-c="'+c[0]+'" aria-pressed="'+(c[0]==='all')+'">'+c[1]+'</button>'}).join('');
+function menu(){var r=D.filter(function(d){if(cat!=='all'&&d[1]!==cat)return false;var f=d[5].split(',');if(dt.v&&f.indexOf('v')<0&&f.indexOf('vg')<0)return false;if(dt.vg&&f.indexOf('vg')<0)return false;if(dt.gf&&f.indexOf('gf')<0)return false;return true});
+$('#g-menu').innerHTML=r.length?r.map(card).join(''):'<p class="note">No dishes match these filters. Try removing one.</p>';$('#count').textContent=r.length+(r.length===1?' dish':' dishes')+' shown';$$('#g-menu .rev').forEach(function(e){e.classList.add('in')})}
+menu();
+// faq
+var Q=[['Do I need to reserve?','This is demonstration information. A real restaurant would explain here whether tables can be booked online, by phone or by walking in.'],['Do you accept walk-ins?','Sample answer: walk-ins would be welcome when tables are free, and the reservation flow shows availability.'],['How do you handle dietary requirements and allergies?','The menu labels vegetarian, vegan and gluten-free dishes as a sample. A real restaurant must confirm allergens with its kitchen and ask guests to mention allergies when booking.'],['Are there vegetarian and vegan options?','Yes, in this demo: use the dietary filters on the menu page to see them.'],['Can you host special occasions or private dining?','Sample answer: guests could add the occasion in the reservation notes, and a real restaurant would describe group capacity and menus.'],['What are your opening hours?','Fictional hours: Tuesday to Sunday 18:00–22:30, closed Monday. A real site would show confirmed hours.'],['Where are you and is there parking?','The address and parking details are placeholders in this demonstration.'],['Can I change or cancel a reservation?','Sample answer: a real restaurant would explain how and by when. In this demo nothing is actually booked.']];
+$('#faq').innerHTML=Q.map(function(q,i){return '<div class="item"><h3><button class="q" type="button" aria-expanded="false" aria-controls="a'+i+'" id="q'+i+'">'+q[0]+'<span class="pm" aria-hidden="true"></span></button></h3><div class="a" id="a'+i+'" role="region" aria-labelledby="q'+i+'"><div><p>'+q[1]+'</p></div></div></div>'}).join('');
+// dialogs
+var dlg=$('#dlg');
+function dopen(h){$('#dc').innerHTML=h;dlg.showModal()}
+// reservation wizard
+var W,st,SL=['18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'],TI=['Party size','Date','Time','Seating','Your details','Special requests','Review'];
+function reset(){W={party:2,date:'',time:'',seat:'Indoor',name:'',email:'',phone:'',occ:'None',notes:''};st=1;err=''}var err='';
+function iso(x){return x.getFullYear()+'-'+('0'+(x.getMonth()+1)).slice(-2)+'-'+('0'+x.getDate()).slice(-2)}
+function days(){var a=[],n=new Date();n.setHours(12,0,0,0);for(var i=0;i<14;i++)a.push(new Date(n.getTime()+i*864e5));return a}
+function full(d,t){var s=d+t,h=0;for(var i=0;i<s.length;i++)h+=s.charCodeAt(i);return h%4===0}
+function fd(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}
+function view(){var h='<ol class="prog" aria-hidden="true">'+TI.map(function(_,i){return '<li class="'+(i<st?'on':'')+'"></li>'}).join('')+'</ol>';
+if(st===8){return h.replace(/class="/g,'class="on ')+'<div class="stp"><h2 tabindex="-1">Demonstration complete</h2><p class="note">Demonstration only: no reservation was made and nothing was sent. A real project would connect this flow to your email or an approved booking service.</p><dl class="sum"><dt>Guests</dt><dd>'+W.party+'</dd><span></span><dt>When</dt><dd>'+fd(W.date)+' at '+W.time+'</dd><span></span><dt>Seating</dt><dd>'+W.seat+'</dd><span></span><dt>Name</dt><dd>'+esc(W.name)+'</dd><span></span></dl><div class="nav2"><button class="btn" type="button" data-a="reset">Start another demo booking</button></div></div>'}
+h+='<p class="mut" aria-live="polite">Step '+st+' of 7: '+TI[st-1]+'</p><div class="stp"><h2 tabindex="-1">'+TI[st-1]+'</h2>';
+if(st===1)h+='<div class="stepper"><button type="button" data-a="dec" aria-label="Fewer guests">−</button><output aria-live="polite">'+W.party+'</output><button type="button" data-a="inc" aria-label="More guests">+</button></div><p class="mut">Up to 10 guests in this demo.</p>';
+if(st===2)h+='<div class="opts">'+days().map(function(x){var i=iso(x),c=x.getDay()===1;return '<button type="button" class="opt" data-a="date" data-v="'+i+'" aria-pressed="'+(W.date===i)+'"'+(c?' disabled':'')+'>'+x.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+(c?'<br><small>Closed</small>':'')+'</button>'}).join('')+'</div>';
+if(st===3)h+=(W.date?'<p class="mut">'+fd(W.date)+'. Times marked as full are demonstration data.</p><div class="opts">'+SL.map(function(t){var f=full(W.date,t);return '<button type="button" class="opt" data-a="time" data-v="'+t+'" aria-pressed="'+(W.time===t)+'"'+(f?' disabled':'')+'>'+t+(f?'<br><small>Full</small>':'')+'</button>'}).join('')+'</div>':'<p class="note">Choose a date first.</p>');
+if(st===4)h+='<div class="opts">'+['Indoor','Terrace','Bar'].map(function(s){return '<button type="button" class="opt" data-a="seat" data-v="'+s+'" aria-pressed="'+(W.seat===s)+'">'+s+'</button>'}).join('')+'</div>';
+if(st===5)h+='<div class="f"><label for="fn">Name</label><input id="fn" data-k="name" autocomplete="name" value="'+esc(W.name)+'"></div><div class="f"><label for="fe">Email</label><input id="fe" type="email" data-k="email" autocomplete="email" value="'+esc(W.email)+'"></div><div class="f"><label for="fp">Phone (optional)</label><input id="fp" type="tel" data-k="phone" autocomplete="tel" value="'+esc(W.phone)+'"></div>';
+if(st===6)h+='<div class="f"><label for="fo">Occasion</label><select id="fo" data-k="occ">'+['None','Birthday','Anniversary','Business lunch','Family gathering'].map(function(o){return '<option value="'+o+'"'+(W.occ===o?' selected':'')+'>'+o+'</option>'}).join('')+'</select></div><div class="f"><label for="fx">Dietary needs or requests (optional)</label><textarea id="fx" rows="4" data-k="notes">'+esc(W.notes)+'</textarea></div>';
+if(st===7){var R=[['Guests',W.party,1],['Date',fd(W.date),2],['Time',W.time,3],['Seating',W.seat,4],['Name',esc(W.name),5],['Email',esc(W.email),5],['Occasion',W.occ,6],['Requests',esc(W.notes)||'None',6]];h+='<dl class="sum">'+R.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd><button type="button" data-a="edit" data-v="'+r[2]+'" aria-label="Change '+r[0]+'">Change</button>'}).join('')+'</dl><p class="note">This is a demonstration. Confirming does not book anything.</p>'}
+h+=(err?'<p class="err" role="alert">'+err+'</p>':'')+'<div class="nav2">'+(st>1?'<button class="btn o" type="button" data-a="back">Back</button>':'')+'<button class="btn" type="button" data-a="next">'+(st===7?'Confirm demo reservation':'Continue')+'</button></div></div>';return h}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]})}
+function draw(f){$('#wiz').innerHTML=view();if(f!==false){var h=$('#wiz h2');if(h)h.focus({preventScroll:true});var r=$('#wiz').getBoundingClientRect();if(r.top<70||r.top>innerHeight*.7)$('#wiz').scrollIntoView({block:'start'})}}
+function ok(){err='';if(st===2&&!W.date)err='Please choose a date.';else if(st===3&&!W.time)err='Please choose a time.';else if(st===5){if(W.name.trim().length<2)err='Please enter your name.';else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(W.email))err='Please enter a valid email address.'}return !err}
+reset();draw(false);
+// events
+document.addEventListener('click',function(e){var t=e.target;var a=t.closest('a[href^="#"]');
+if(a){e.preventDefault();var hh=a.getAttribute('href');if(hh==='#main'){$('#main').focus();return}if(location.hash===hh)go();else location.hash=hh;return}
+var q=t.closest('button.q');if(q){var it=q.closest('.item'),o=it.classList.toggle('open');q.setAttribute('aria-expanded',String(o));return}
+var d=t.closest('.dish');if(d){var x=D.filter(function(z){return z[0]===d.dataset.id})[0];dopen('<span class="art" style="display:block;width:7rem;margin-bottom:1rem">'+plate(x[7])+'</span><h2 id="dt">'+x[2]+'</h2><p>'+x[3]+'</p><p><b>€'+x[4]+'</b> (sample price) '+labels(x[5])+'</p><p class="note">Labels are samples; a real restaurant must confirm allergens.</p>');return}
+var g=t.closest('[data-g]');if(g){var p=g.dataset.g.split('|');dopen('<span class="ph">'+plate(p[1])+'<b>Illustration</b></span><h2 id="dt" style="margin-top:1rem">'+p[0]+'</h2><p class="note">An illustration stands in for photography in this demonstration.</p>');return}
+if(t.closest('#dx')){dlg.close();return}
+var c=t.closest('#cats button');if(c){cat=c.dataset.c;$$('#cats button').forEach(function(b){b.setAttribute('aria-pressed',String(b===c))});menu();return}
+var df=t.closest('#diet button');if(df){var k=df.dataset.d,on=df.getAttribute('aria-pressed')!=='true';dt[k]=on;df.setAttribute('aria-pressed',String(on));if(on&&(k==='vg'||k==='v')){var o2=k==='vg'?'v':'vg';dt[o2]=false;$('#diet [data-d='+o2+']').setAttribute('aria-pressed','false')}menu();return}
+var m=t.closest('#wiz [data-a]');if(!m)return;var A=m.dataset.a,v=m.dataset.v;
+if(A==='inc')W.party=Math.min(10,W.party+1);else if(A==='dec')W.party=Math.max(1,W.party-1);else if(A==='date'){W.date=v;W.time=''}else if(A==='time')W.time=v;else if(A==='seat')W.seat=v;
+else if(A==='next'){if(!ok()){draw(false);return}st=st===7?8:st+1;err=''}else if(A==='back'){st=Math.max(1,st-1);err=''}else if(A==='edit'){st=+v;err=''}else if(A==='reset'){reset()}
+draw(A==='next'||A==='back'||A==='edit'||A==='reset')});
+dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+document.addEventListener('input',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k)W[k]=e.target.value});
+document.addEventListener('change',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k)W[k]=e.target.value});
+// router, nav, reveal
+var P=$$('[data-p]'),L=$$('nav a'),nv=$('#nv'),mb=$('.mb');
+function go(){var h=(location.hash||'#home').slice(1),s=P.filter(function(x){return x.dataset.p===h})[0]||P[0];P.forEach(function(x){x.hidden=x!==s});L.forEach(function(a){if(a.getAttribute('href')==='#'+s.dataset.p)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});document.title=s.dataset.t+' | Olive & Oak (demo)';nv.classList.remove('open');mb.setAttribute('aria-expanded','false');scrollTo(0,0)}
+addEventListener('hashchange',go);go();
+mb.addEventListener('click',function(){var o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',String(o))});
+if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('rv');var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});$$('.rev').forEach(function(el){io.observe(el)})}
+})();
+</script><script>/* P&N Digital demo translation layer (English source, Greek view).
+   Every visible string, label and the page title is looked up in EL; strings that contain
+   numbers, dates or times are handled by the rules in T(). Anything the page script draws
+   later (menus, booking steps, errors) is translated as it appears. Typed visitor input
+   is never changed. Switch with the EN | ΕΛ buttons, ?lang=el, or a message from the
+   portfolio preview: { pnLang: 'el' }. */
+(function () {
+  var EL = {"Email": "Email", "(sample price)": "(ενδεικτική τιμή)", "18:00–22:30 (demonstration)": "18:00–22:30 (επίδειξη)", "Categories": "Κατηγορίες", "Dietary filters": "Φίλτρα διατροφής", "Fewer guests": "Λιγότερα άτομα", "More guests": "Περισσότερα άτομα", "Gluten-free": "Χωρίς γλουτένη", "Main": "Κύριο μενού", "Language": "Γλώσσα", "Vegan": "Βίγκαν", "Vegetarian": "Χορτοφαγικά", "A Taste of the Mediterranean.": "Μια γεύση από τη Μεσόγειο.", "A fictional private room for groups. A real restaurant would list capacity and menus here; this demo shows the layout only.": "Μια φανταστική ιδιωτική αίθουσα για παρέες. Ένα πραγματικό εστιατόριο θα ανέφερε εδώ χωρητικότητα και μενού· αυτή η επίδειξη δείχνει μόνο τη διάταξη.", "Address": "Διεύθυνση", "All": "Όλα", "An illustration stands in for photography in this demonstration.": "Σε αυτή την επίδειξη μια εικονογράφηση αντικαθιστά τη φωτογραφία.", "Anniversary": "Επέτειος", "Are there vegetarian and vegan options?": "Υπάρχουν χορτοφαγικές και βίγκαν επιλογές;", "Ask about a group booking": "Ρωτήστε για κράτηση παρέας", "Ask the kitchen.": "Ρωτήστε την κουζίνα.", "Back": "Πίσω", "Bar": "Μπαρ", "Birthday": "Γενέθλια", "Birthdays, anniversaries and family gatherings. Tell us in the reservation notes and we would prepare the table. (Demonstration copy.)": "Γενέθλια, επέτειοι και οικογενειακές συγκεντρώσεις. Γράψτε το στις σημειώσεις της κράτησης και θα ετοιμάζαμε το τραπέζι. (Κείμενο επίδειξης.)", "Brewed slowly, served unfiltered.": "Ψημένος αργά, σερβίρεται αφιλτράριστος.", "Business lunch": "Επαγγελματικό γεύμα", "Can I change or cancel a reservation?": "Μπορώ να αλλάξω ή να ακυρώσω μια κράτηση;", "Can you host special occasions or private dining?": "Φιλοξενείτε ξεχωριστές περιστάσεις ή ιδιωτικά δείπνα;", "Change": "Αλλαγή", "Chef’s recommendations": "Προτάσεις του σεφ", "Close": "Κλείσιμο", "Closed": "Κλειστά", "Closed (demonstration)": "Κλειστά (επίδειξη)", "Confirm demo reservation": "Επιβεβαίωση κράτησης επίδειξης", "Continue": "Συνέχεια", "Cooked simply, shared slowly.": "Απλό μαγείρεμα, χαλαρό μοίρασμα.", "Cypriot coffee": "Κυπριακός καφές", "Date": "Ημερομηνία", "Demonstration complete": "Η επίδειξη ολοκληρώθηκε", "Demonstration menu: dishes, prices and dietary labels are fictional. A real restaurant must confirm allergens.": "Μενού επίδειξης: τα πιάτα, οι τιμές και οι διατροφικές σημάνσεις είναι φανταστικά. Ένα πραγματικό εστιατόριο πρέπει να επιβεβαιώνει τα αλλεργιογόνα.", "Demonstration only. The restaurant and this booking flow are fictional. Nothing is booked or sent.": "Μόνο επίδειξη. Το εστιατόριο και αυτή η διαδικασία κράτησης είναι φανταστικά. Τίποτα δεν κλείνεται ή αποστέλλεται.", "Demonstration only: no reservation was made and nothing was sent. A real project would connect this flow to your email or an approved booking service.": "Μόνο επίδειξη: δεν έγινε καμία κράτηση και δεν στάλθηκε τίποτα. Ένα πραγματικό έργο θα συνέδεε αυτή τη διαδικασία με το email σας ή με εγκεκριμένη υπηρεσία κρατήσεων.", "Demonstration restaurant · fictional": "Εστιατόριο επίδειξης · φανταστικό", "Demonstration website by P&N Digital. Olive & Oak is a fictional business: names, dishes, prices, hours and details are invented, and nothing on this site is sent anywhere. Illustrations stand in for photography.": "Ιστοσελίδα επίδειξης από την P&N Digital. Το Olive & Oak είναι φανταστική επιχείρηση: τα ονόματα, τα πιάτα, οι τιμές, το ωράριο και τα στοιχεία είναι επινοημένα και τίποτα σε αυτή την ιστοσελίδα δεν αποστέλλεται πουθενά. Εικονογραφήσεις αντικαθιστούν τις φωτογραφίες.", "Dessert": "Επιδόρπιο", "Desserts": "Επιδόρπια", "Dietary needs or requests (optional)": "Διατροφικές ανάγκες ή αιτήματα (προαιρετικά)", "Dishes and prices are fictional demonstration content. Illustrations stand in for photography.": "Τα πιάτα και οι τιμές είναι φανταστικό περιεχόμενο επίδειξης. Εικονογραφήσεις αντικαθιστούν τις φωτογραφίες.", "Do I need to reserve?": "Χρειάζεται κράτηση;", "Do you accept walk-ins?": "Δέχεστε πελάτες χωρίς κράτηση;", "Drinks": "Ποτά", "Explore Our Menu": "Δείτε το μενού μας", "Family gathering": "Οικογενειακή συγκέντρωση", "Fictional hours: Tuesday to Sunday 18:00–22:30, closed Monday. A real site would show confirmed hours.": "Φανταστικό ωράριο: Τρίτη έως Κυριακή 18:00–22:30, κλειστά τη Δευτέρα. Μια πραγματική ιστοσελίδα θα έδειχνε επιβεβαιωμένο ωράριο.", "Find us": "Πού θα μας βρείτε", "For the table.": "Για το τραπέζι.", "Fresh ingredients": "Φρέσκα υλικά", "Fresh lemonade with mint": "Φρέσκια λεμονάδα με δυόσμο", "Fresh tagliatelle with mushrooms and thyme.": "Φρέσκες ταλιατέλες με μανιτάρια και θυμάρι.", "From the pass to the table.": "Από την κουζίνα στο τραπέζι.", "Fruit of the moment with mint yoghurt.": "Φρούτα εποχής με γιαούρτι δυόσμου.", "Full": "Πλήρες", "GF": "ΧΓ", "Gallery": "Γκαλερί", "Good to know before you visit.": "Καλό να ξέρετε πριν έρθετε.", "Grilled halloumi, thyme honey": "Χαλλούμι σχάρας, μέλι θυμαριού", "Grilled octopus, smoked paprika": "Χταπόδι σχάρας, καπνιστή πάπρικα", "Guests": "Άτομα", "Herb-roasted chicken, charred greens": "Κοτόπουλο ψητό με μυρωδικά, λαχανικά σχάρας", "Herb-rubbed chicken with greens from the grill.": "Κοτόπουλο με μυρωδικά και λαχανικά από τη σχάρα.", "Home": "Αρχική", "Honey and walnut cake": "Κέικ με μέλι και καρύδια", "Hours are fictional placeholders.": "Το ωράριο είναι φανταστικό και προσωρινό.", "How do you handle dietary requirements and allergies?": "Πώς χειρίζεστε τις διατροφικές ανάγκες και τις αλλεργίες;", "Hummus, warm pita, olive oil": "Χούμους, ζεστή πίτα, ελαιόλαδο", "Illustration": "Εικονογράφηση", "Indoor": "Εσωτερικός χώρος", "Labels are samples; a real restaurant must confirm allergens.": "Οι σημάνσεις είναι ενδεικτικές· ένα πραγματικό εστιατόριο πρέπει να επιβεβαιώνει τα αλλεργιογόνα.", "Lamb shoulder braised slowly with lemon and oregano.": "Σπάλα αρνιού μαγειρεμένη αργά με λεμόνι και ρίγανη.", "Main courses": "Κυρίως πιάτα", "Menu": "Μενού", "Moist cake with local honey and walnuts.": "Αφράτο κέικ με ντόπιο μέλι και καρύδια.", "Monday": "Δευτέρα", "Name": "Όνομα", "No dishes match these filters. Try removing one.": "Κανένα πιάτο δεν ταιριάζει σε αυτά τα φίλτρα. Δοκιμάστε να αφαιρέσετε ένα.", "None": "Καμία", "Occasion": "Περίσταση", "Olive & Oak is an invented restaurant made by P&N Digital to show what a restaurant website can do: a menu you can filter, a reservation flow you can walk through and answers to the questions guests ask.": "Το Olive & Oak είναι ένα επινοημένο εστιατόριο που δημιούργησε η P&N Digital για να δείξει τι μπορεί να κάνει μια ιστοσελίδα εστιατορίου: ένα μενού που φιλτράρεται, μια διαδικασία κράτησης που μπορείτε να δοκιμάσετε και απαντήσεις στις ερωτήσεις των επισκεπτών.", "Olive & Oak is fictional, so it has no real history. This sample copy shows how a story section can carry a restaurant’s voice: olive oil, citrus, herbs and the sea, cooked with patience.": "Το Olive & Oak είναι φανταστικό, επομένως δεν έχει πραγματική ιστορία. Αυτό το δείγμα κειμένου δείχνει πώς μια ενότητα ιστορίας μπορεί να αποδώσει τη φωνή ενός εστιατορίου: ελαιόλαδο, εσπεριδοειδή, μυρωδικά και θάλασσα, μαγειρεμένα με υπομονή.", "Opening hours": "Ωράριο λειτουργίας", "Orange blossom panna cotta": "Πανακότα με άνθος πορτοκαλιάς", "Orzo in a slow-cooked tomato and basil sauce.": "Κριθαράκι σε σάλτσα ντομάτας και βασιλικού μαγειρεμένη αργά.", "Orzo, slow tomato, basil": "Κριθαράκι, ντομάτα αργού μαγειρέματος, βασιλικός", "Our story (sample copy)": "Η ιστορία μας (δείγμα κειμένου)", "Parking": "Στάθμευση", "Party size": "Αριθμός ατόμων", "Pasta": "Ζυμαρικά", "Phone (optional)": "Τηλέφωνο (προαιρετικά)", "Please choose a date.": "Παρακαλούμε επιλέξτε ημερομηνία.", "Please choose a time.": "Παρακαλούμε επιλέξτε ώρα.", "Please enter a valid email address.": "Παρακαλούμε εισάγετε έγκυρη διεύθυνση email.", "Please enter your name.": "Παρακαλούμε εισάγετε το όνομά σας.", "Prawn saganaki, tomato and feta": "Γαρίδες σαγανάκι, ντομάτα και φέτα", "Prawns in a tomato sauce with feta.": "Γαρίδες σε σάλτσα ντομάτας με φέτα.", "Pressed lemon and mint.": "Στυμμένο λεμόνι και δυόσμος.", "Private dining": "Ιδιωτικά δείπνα", "Questions": "Ερωτήσεις", "Requests": "Αιτήματα", "Reservations": "Κρατήσεις", "Reserve": "Κράτηση", "Reserve a table": "Κλείστε τραπέζι", "Review": "Έλεγχος", "Ripe tomatoes, capers and wild oregano with olive oil.": "Ώριμες ντομάτες, κάππαρη και άγρια ρίγανη με ελαιόλαδο.", "Roasted aubergine, tahini, pomegranate": "Ψητή μελιτζάνα, ταχίνι, ρόδι", "Sample answer: a real restaurant would explain how and by when. In this demo nothing is actually booked.": "Δείγμα απάντησης: ένα πραγματικό εστιατόριο θα εξηγούσε πώς και μέχρι πότε. Σε αυτή την επίδειξη τίποτα δεν κλείνεται πραγματικά.", "Sample answer: guests could add the occasion in the reservation notes, and a real restaurant would describe group capacity and menus.": "Δείγμα απάντησης: οι επισκέπτες θα μπορούσαν να αναφέρουν την περίσταση στις σημειώσεις της κράτησης και ένα πραγματικό εστιατόριο θα περιέγραφε τη χωρητικότητα για παρέες και τα μενού.", "Sample answer: walk-ins would be welcome when tables are free, and the reservation flow shows availability.": "Δείγμα απάντησης: πελάτες χωρίς κράτηση θα ήταν ευπρόσδεκτοι όταν υπάρχουν ελεύθερα τραπέζια και η διαδικασία κράτησης δείχνει τη διαθεσιμότητα.", "Sample guest A, fictional": "Δείγμα επισκέπτη Α, φανταστικό", "Sample guest B, fictional": "Δείγμα επισκέπτη Β, φανταστικό", "Sample guest C, fictional": "Δείγμα επισκέπτη Γ, φανταστικό", "Sample testimonials (fictional)": "Δείγματα μαρτυριών (φανταστικά)", "Save your table.": "Κλείστε το τραπέζι σας.", "Sea bream, fennel and citrus": "Τσιπούρα, μάραθο και εσπεριδοειδή", "Seafood": "Θαλασσινά", "Seasonal fruit, mint yoghurt": "Φρούτα εποχής, γιαούρτι δυόσμου", "Seasonal specials": "Πιάτα εποχής", "Seating": "Θέση", "Signature dishes": "Χαρακτηριστικά πιάτα", "Silky chickpea purée with warm pita and grassy olive oil.": "Βελούδινος πουρές ρεβιθιών με ζεστή πίτα και φρουτώδες ελαιόλαδο.", "Skip to content": "Μετάβαση στο περιεχόμενο", "Slow-braised lamb, lemon potatoes": "Αρνί αργού μαγειρέματος, λεμονάτες πατάτες", "Smoky aubergine, tahini and pomegranate.": "Καπνιστή μελιτζάνα, ταχίνι και ρόδι.", "Soft panna cotta scented with orange blossom.": "Απαλή πανακότα αρωματισμένη με άνθος πορτοκαλιάς.", "Spaghetti with lemon, garlic and a little heat.": "Σπαγγέτι με λεμόνι, σκόρδο και λίγη κάψα.", "Spaghetti, lemon, garlic, chilli": "Σπαγγέτι, λεμόνι, σκόρδο, τσίλι", "Sparkling water": "Ανθρακούχο νερό", "Special occasions": "Ξεχωριστές περιστάσεις", "Special requests": "Ειδικά αιτήματα", "Squeaky halloumi scorched on the grill with thyme honey.": "Τραγανό χαλλούμι ψημένο στη σχάρα με μέλι θυμαριού.", "Start another demo booking": "Νέα κράτηση επίδειξης", "Starters": "Ορεκτικά", "Table setting": "Στρωμένο τραπέζι", "Tagliatelle, wild mushroom, thyme": "Ταλιατέλες, άγρια μανιτάρια, θυμάρι", "Telephone": "Τηλέφωνο", "Tender octopus finished over the grill.": "Τρυφερό χταπόδι που ολοκληρώνεται στη σχάρα.", "Terrace": "Βεράντα", "The address and parking details are placeholders in this demonstration.": "Η διεύθυνση και τα στοιχεία στάθμευσης είναι προσωρινά σε αυτή την επίδειξη.", "The kitchen": "Η κουζίνα", "The menu": "Το μενού", "The menu labels vegetarian, vegan and gluten-free dishes as a sample. A real restaurant must confirm allergens with its kitchen and ask guests to mention allergies when booking.": "Το μενού σημαίνει ενδεικτικά τα χορτοφαγικά, τα βίγκαν και τα πιάτα χωρίς γλουτένη. Ένα πραγματικό εστιατόριο πρέπει να επιβεβαιώνει τα αλλεργιογόνα με την κουζίνα του και να ζητά από τους επισκέπτες να αναφέρουν τις αλλεργίες κατά την κράτηση.", "The pass": "Το πάσο της κουζίνας", "The plates we would put first.": "Τα πιάτα που θα βάζαμε πρώτα.", "The room": "Η αίθουσα", "The terrace": "Η βεράντα", "This is a demonstration. Confirming does not book anything.": "Αυτό είναι επίδειξη. Η επιβεβαίωση δεν κλείνει τίποτα.", "This is demonstration information. A real restaurant would explain here whether tables can be booked online, by phone or by walking in.": "Πρόκειται για πληροφορίες επίδειξης. Ένα πραγματικό εστιατόριο θα εξηγούσε εδώ αν τα τραπέζια κλείνονται ηλεκτρονικά, τηλεφωνικά ή με επίσκεψη.", "Time": "Ώρα", "Tomato, caper and oregano salad": "Σαλάτα με ντομάτα, κάππαρη και ρίγανη", "Tuesday–Sunday": "Τρίτη–Κυριακή", "Up to 10 guests in this demo.": "Έως 10 άτομα σε αυτή την επίδειξη.", "V": "Χ", "VG": "Β", "Walk through the demonstration reservation. Nothing is booked or sent.": "Δοκιμάστε την κράτηση επίδειξης. Τίποτα δεν κλείνεται ή αποστέλλεται.", "What are your opening hours?": "Ποιο είναι το ωράριό σας;", "What guests might say.": "Τι θα μπορούσαν να πουν οι επισκέπτες.", "What the market offers now.": "Ό,τι προσφέρει τώρα η αγορά.", "When": "Πότε", "Where are you and is there parking?": "Πού βρίσκεστε και υπάρχει στάθμευση;", "Whole bream with shaved fennel and citrus.": "Ολόκληρη τσιπούρα με λεπτοκομμένο μάραθο και εσπεριδοειδή.", "Wine list": "Λίστα κρασιών", "Yes, in this demo: use the dietary filters on the menu page to see them.": "Ναι, σε αυτή την επίδειξη: χρησιμοποιήστε τα φίλτρα διατροφής στη σελίδα του μενού για να τις δείτε.", "Your details": "Τα στοιχεία σας", "[placeholder address]": "[προσωρινή διεύθυνση]", "[placeholder]": "[προσωρινό]", "“Easy to book, and they remembered my vegan request.”": "«Εύκολη κράτηση, και θυμήθηκαν το βίγκαν αίτημά μου.»", "“The lamb fell off the bone and the terrace was perfect at sunset.”": "«Το αρνί έλιωνε στο στόμα και η βεράντα ήταν τέλεια στο ηλιοβασίλεμα.»", "“We celebrated a birthday here and nothing felt rushed.”": "«Γιορτάσαμε γενέθλια εδώ και τίποτα δεν έγινε βιαστικά.»"}, BRAND = "Olive & Oak";
+  var DAY = { Monday: 'Δευτέρα', Tuesday: 'Τρίτη', Wednesday: 'Τετάρτη', Thursday: 'Πέμπτη', Friday: 'Παρασκευή', Saturday: 'Σάββατο', Sunday: 'Κυριακή' };
+  var DY = { Mon: 'Δευ', Tue: 'Τρί', Wed: 'Τετ', Thu: 'Πέμ', Fri: 'Παρ', Sat: 'Σάβ', Sun: 'Κυρ' };
+  var MON = { January: 'Ιανουαρίου', February: 'Φεβρουαρίου', March: 'Μαρτίου', April: 'Απριλίου', May: 'Μαΐου', June: 'Ιουνίου', July: 'Ιουλίου', August: 'Αυγούστου', September: 'Σεπτεμβρίου', October: 'Οκτωβρίου', November: 'Νοεμβρίου', December: 'Δεκεμβρίου' };
+  var MO = { Jan: 'Ιαν', Feb: 'Φεβ', Mar: 'Μαρ', Apr: 'Απρ', May: 'Μαΐ', Jun: 'Ιουν', Jul: 'Ιουλ', Aug: 'Αυγ', Sep: 'Σεπ', Oct: 'Οκτ', Nov: 'Νοε', Dec: 'Δεκ' };
+  var m = location.search.match(/[?&]lang=(el|en)\b/), LANG = m ? m[1] : 'en';
+
+  function T(s) {
+    var r;
+    if (Object.prototype.hasOwnProperty.call(EL, s)) return EL[s];
+    if ((r = s.match(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) (\d{1,2}) ([A-Z][a-z]+)$/)) && MON[r[3]]) return DAY[r[1]] + ' ' + r[2] + ' ' + MON[r[3]];
+    if ((r = s.match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (\d{1,2}) ([A-Z][a-z]{2})$/)) && MO[r[3]]) return DY[r[1]] + ' ' + r[2] + ' ' + MO[r[3]];
+    if ((r = s.match(/^Step (\d+) of (\d+): (.+)$/))) return 'Βήμα ' + r[1] + ' από ' + r[2] + ': ' + (T(r[3]) || r[3]);
+    if ((r = s.match(/^(\d+) dish(es)? shown$/))) return r[1] === '1' ? '1 πιάτο εμφανίζεται' : r[1] + ' πιάτα εμφανίζονται';
+    if ((r = s.match(/^Change (.+)$/)) && T(r[1])) return 'Αλλαγή: ' + T(r[1]);
+    if ((r = s.match(/^Enlarge: (.+)$/))) return 'Μεγέθυνση: ' + (T(r[1]) || r[1]);
+    if ((r = s.match(/^Illustration · (.+)$/))) return 'Εικονογράφηση · ' + (T(r[1]) || r[1]);
+    if ((r = s.match(/^(.+) \| (.+) \(demo\)$/))) return (T(r[1]) || r[1]) + ' | ' + r[2] + ' (επίδειξη)';
+    if ((r = s.match(/^€(\d+) · (\d+) min( \(sample\))?$/))) return '€' + r[1] + ' · ' + r[2] + ' λεπτά' + (r[3] ? ' (ενδεικτικά)' : '');
+    if ((r = s.match(/^\+€(\d+) · \+(\d+) min$/))) return '+€' + r[1] + ' · +' + r[2] + ' λεπτά';
+    if ((r = s.match(/^· (\+?\d+) min \(sample\)$/))) return '· ' + r[1] + ' λεπτά (ενδεικτικά)';
+    if ((r = s.match(/^ends (\d\d:\d\d)$/))) return 'λήξη ' + r[1];
+    if ((r = s.match(/^(\d\d:\d\d) to (\d\d:\d\d)(, full)?$/))) return r[1] + ' έως ' + r[2] + (r[3] ? ', πλήρες' : '');
+    if ((r = s.match(/^Barber: (.+)$/))) return 'Κουρέας: ' + (T(r[1]) || r[1]);
+    if ((r = s.match(/^\+ (.+)$/)) && T(r[1])) return '+ ' + T(r[1]);
+    if ((r = s.match(/^(.+) at (\d\d:\d\d)$/)) && T(r[1])) return T(r[1]) + ' στις ' + r[2];
+    if ((r = s.match(/^(.+)( · |, )(\d\d:\d\d–\d\d:\d\d)$/)) && T(r[1])) return T(r[1]) + r[2] + r[3];
+    if ((r = s.match(/^([A-Z][a-z]+ \d{1,2} [A-Z][a-z]+)\. (.+)$/)) && T(r[1])) {
+      var tail = r[2] === 'Times marked as full are demonstration data.' ? 'Οι ώρες με την ένδειξη «Πλήρες» είναι δεδομένα επίδειξης.'
+        : r[2] === 'Times that would run past closing are not shown. Times marked full are demonstration data.' ? 'Δεν εμφανίζονται ώρες που θα ξεπερνούσαν το κλείσιμο. Οι ώρες με την ένδειξη «Πλήρες» είναι δεδομένα επίδειξης.' : T(r[2]);
+      if (tail) return T(r[1]) + '. ' + tail;
+    }
+    var parts;
+    if (s.indexOf(' + ') > 0 && (parts = s.split(' + ')).every(T)) return parts.map(T).join(' + ');
+    if (s.indexOf(', ') > 0 && (parts = s.split(', ')).every(function (p) { return Object.prototype.hasOwnProperty.call(EL, p); })) return parts.map(T).join(', ');
+    return null;
+  }
+  function tr(raw) {
+    var k = raw.replace(/\s+/g, ' ').trim(); if (!k) return raw;
+    var t = T(k); if (t == null) return raw;
+    var lead = raw.match(/^\s*/)[0], trail = raw.match(/\s*$/)[0];
+    return lead + t + trail;
+  }
+  var src = new WeakMap(), last = new WeakMap(), asrc = new WeakMap(), ATTRS = ['aria-label', 'title', 'alt', 'placeholder'];
+  function skip(el) { return !el || el.closest('script,style,[data-no-i18n]') || el.closest('input,textarea'); }
+  function fixText(n) {
+    var p = n.parentNode; if (!p || p.nodeType !== 1 || skip(p)) return;
+    var cur = n.nodeValue;
+    if (last.get(n) !== cur) src.set(n, cur);          // new node, or the page script changed it: this is the English source
+    var out = LANG === 'el' ? tr(src.get(n)) : src.get(n);
+    if (out !== cur) n.nodeValue = out;
+    last.set(n, out);
+  }
+  function fixAttrs(el) {
+    if (el.nodeType !== 1 || !el.closest || el.closest('script,style,[data-no-i18n]')) return;
+    var rec = asrc.get(el) || {}; asrc.set(el, rec);
+    ATTRS.forEach(function (a) {
+      var cur = el.getAttribute(a); if (cur == null) return;
+      if (!rec[a] || rec[a][1] !== cur) rec[a] = [cur, cur];
+      var out = LANG === 'el' ? tr(rec[a][0]) : rec[a][0];
+      if (out !== cur) el.setAttribute(a, out);
+      rec[a][1] = out;
+    });
+  }
+  function walk(root) {
+    if (root.nodeType === 3) return fixText(root);
+    if (root.nodeType !== 1) return;
+    fixAttrs(root);
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) fixText(n);
+    [].forEach.call(root.querySelectorAll('[aria-label],[title],[alt],[placeholder]'), fixAttrs);
+  }
+  var obs = new MutationObserver(function (muts) {
+    muts.forEach(function (mu) {
+      if (mu.type === 'characterData') fixText(mu.target);
+      else if (mu.type === 'attributes') fixAttrs(mu.target);
+      else [].forEach.call(mu.addedNodes, walk);
+    });
+    obs.takeRecords();                                  // drop the records our own changes just produced
+  });
+  function setLang(l) {
+    if (l !== 'en' && l !== 'el') return;
+    LANG = l; document.documentElement.lang = l;
+    walk(document.documentElement); obs.takeRecords();
+    [].forEach.call(document.querySelectorAll('.lg button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-l') === l)); });
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.lg button[data-l]'); if (b) setLang(b.getAttribute('data-l')); });
+  addEventListener('message', function (e) { if (e.source === parent && e.data && e.data.pnLang) setLang(e.data.pnLang); });
+  obs.observe(document.documentElement, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTRS });
+  setLang(LANG);
+  window.PN_I18N = { setLang: setLang, lang: function () { return LANG; } };
+})();
+</script><script src="/assets/assistant/packs/olive-and-oak.js"></script><script src="/assets/assistant/assistant.js" data-business="olive-and-oak"></script></body></html>

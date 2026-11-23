@@ -1,0 +1,6 @@
+# Cloudflare Pages custom headers (take effect only once deployed there; not verified).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+/demos/*
+  X-Robots-Tag: noindex
