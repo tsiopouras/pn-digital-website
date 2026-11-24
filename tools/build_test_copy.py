@@ -21,6 +21,12 @@ def rd(p):
     return open(os.path.join(SITE, p), encoding='utf-8').read()
 
 
+def pack(bid):
+    # The test copy is not served from an allowed website address, so the engine would refuse it: its
+    # assistants always run in labelled demo mode (no engine address, nothing sent).
+    return re.sub(r'"endpoint":"[^"]*"', '"endpoint":""', rd(f'assets/assistant/packs/{bid}.js'))
+
+
 def route(path):
     m = re.match(PAGE_RE, path.split('?')[0].split('#')[0])
     if not m:
@@ -50,12 +56,12 @@ for f in sorted(glob.glob(SITE + '/**/index.html', recursive=True)):
 css = rd('css/styles.css')
 js = ''.join(rd(f'js/{n}.js') + '\n' for n in ('site-config', 'projects', 'preview', 'main', 'forms', 'fx'))
 LINKMAP = r'''window.PN_ASSISTANT_LINK=function(href,lang){if(href.charAt(0)==='#')return href;var m=href.match(/^(\/el)?\/(?:(work|services|about|contact)\/|projects\/([a-z-]+)\/)?(#.*)?$/);if(!m)return href;var pre=(lang==='el'||m[1])?'el-':'';return '#'+pre+(m[2]||(m[3]?'project-'+m[3]:'home'));};'''
-agency_ai = rd('assets/assistant/packs/pn-digital.js').replace('</', '<\\/') + "window.PN_ASSISTANT_ID='pn-digital';\n" + LINKMAP + '\n'
+agency_ai = pack('pn-digital').replace('</', '<\\/') + "window.PN_ASSISTANT_ID='pn-digital';\n" + LINKMAP + '\n'
 ASSIST = rd('assets/assistant/assistant.js').replace('</', '<\\/')  # an inline script must not contain '</script'
 def inline_assistant(page, bid):
     tag = f'<script src="/assets/assistant/packs/{bid}.js"></script><script src="/assets/assistant/assistant.js" data-business="{bid}"></script>'
     assert tag in page, bid
-    return page.replace(tag, '<script>' + rd(f'assets/assistant/packs/{bid}.js').replace('</', '<\\/') + f'window.PN_ASSISTANT_ID={json.dumps(bid)};</script><script>' + ASSIST + '</script>')
+    return page.replace(tag, '<script>' + pack(bid).replace('</', '<\\/') + f'window.PN_ASSISTANT_ID={json.dumps(bid)};</script><script>' + ASSIST + '</script>')
 demos = {slug: inline_assistant(rd(f'demos/{d}/index.html'), {'nexora': 'nexora'}.get(d, d)) for slug, d in DEMO_DIR.items()}
 demos_js = 'window.PN_DEMOS=' + json.dumps(demos, ensure_ascii=False).replace('</', '<\\/') + ';\n'
 names_js = 'window.PN_NAMES=' + json.dumps(NAMES, ensure_ascii=False) + ';\n'
