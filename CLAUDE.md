@@ -7,7 +7,9 @@ beginner with developer tools: explain commands and technical ideas in plain wor
 - The agency's own website and portfolio. Plain HTML, CSS and vanilla JavaScript. **No frameworks, no npm, no build step.**
 - `public/` is the website and the only folder that gets published. Everything else (docs, tests, tools) stays private.
 - Every page exists in English (`public/…`) and Greek (`public/el/…`). Any text change must be made in both.
-- The three demos in `public/demos/` are single self-contained files with hash routing (`#home`, `#menu`, …).
+- The five demos in `public/demos/` are single self-contained files with hash routing (`#home`, `#menu`, …). Their "How we built it"
+  numbers come from `python tools/measure_demo.py`.
+- `public/privacy/` (and `/el/privacy/`) must stay true: if the site adds cookies, analytics or an outside service, update it first.
 - The AI assistant engine is a separate repository, `pn-digital-ai-assistant`, normally cloned next to this one.
   Its exporter writes `public/assets/assistant/packs/*.js` here. Do not edit the packs by hand.
 

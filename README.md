@@ -26,13 +26,14 @@
 
 | | |
 |---|---|
-| **Interactive portfolio** | Three complete demo websites (restaurant, barbershop, consultancy) open in a live preview with a desktop / phone switch, or full-screen. |
+| **Interactive portfolio** | Five complete demo websites (restaurant, barbershop, consultancy, seaside hotel, beauty salon) open in a live preview with a desktop / phone switch, or full-screen. |
 | **Two languages everywhere** | Every page exists in English and Greek (`/el/`), with `hreflang`, a language switcher, and demos that follow the visitor's language. |
 | **Language guarantee** | Packages include 2, 3 or 5 languages; right-to-left languages such as Hebrew and Arabic are supported. |
 | **Quote calculator** | Visitors pick pages, languages and extras and see the matching package and starting price live, then send the estimate on WhatsApp or by email. |
 | **Contact without a backend** | The form opens the visitor's own WhatsApp or email app with the message ready. Nothing is sent or stored by the site. |
-| **AI assistant** | A chat assistant on every page and demo, powered by the separate [`pn-digital-ai-assistant`](https://github.com/tsiopouras/pn-digital-ai-assistant) engine. Runs in a clearly labelled demo mode until the engine is deployed. |
+| **AI assistant** | A chat assistant on every page and demo, powered by the separate [`pn-digital-ai-assistant`](https://github.com/tsiopouras/pn-digital-ai-assistant) engine. On the agency pages it answers with real AI (Google Gemini, through the deployed engine); on the demos it runs in a clearly labelled demo mode and sends nothing. |
 | **"How we built it"** | Each project page shows a wireframe-to-finished slider, measured code stats and the build story. |
+| **Privacy page** | A plain-language privacy page in both languages (`/privacy/`): no cookies or trackers, how contact and the AI chat work, and visitors' rights. |
 | **Accessible and fast** | Semantic HTML, keyboard support, visible focus, reduced-motion support, no framework JavaScript, lazy-loaded images. |
 
 <table>
@@ -57,7 +58,12 @@
 | ![Olive & Oak](docs/screenshots/demo-olive-and-oak.jpg) | ![THE CUT](docs/screenshots/demo-the-cut.jpg) | ![Nexora](docs/screenshots/demo-nexora.jpg) |
 | Filterable 18-dish menu, 8-step reservation walkthrough | Services with prices and times, 8-step booking that adds up | Services, illustrative case studies, 7-step enquiry |
 
-All three businesses are fictional and clearly labelled as demos. Their forms never send anything.
+| Halcyon Bay · seaside hotel | Myrtle Beauty Studio · beauty salon |
+|---|---|
+| ![Halcyon Bay](docs/screenshots/demo-halcyon-bay.jpg) | ![Myrtle Beauty Studio](docs/screenshots/demo-myrtle.jpg) |
+| Room filters and pop-ups, date calendar, 8-step booking that prices the stay | Treatment filters, treatment finder, 8-step booking with the right specialists and patch-test reminders |
+
+All five businesses are fictional and clearly labelled as demos. Their forms never send anything.
 
 ## Run it on your computer
 
@@ -78,8 +84,8 @@ Then open <http://localhost:5500>.
 ```
 public/                 ← the website (this folder is what gets published)
   index.html            English homepage      el/            Greek copies of every page
-  work/ services/ about/ contact/ projects/   one folder per page
-  demos/                the three demo websites (one self-contained file each)
+  work/ services/ about/ contact/ privacy/ projects/   one folder per page
+  demos/                the five demo websites (one self-contained file each)
   css/styles.css        all styles
   js/                   site-config.js (contact details), projects.js (portfolio list),
                         main.js, fx.js (animations), preview.js (live preview), forms.js
@@ -89,7 +95,7 @@ public/                 ← the website (this folder is what gets published)
   sitemap.xml robots.txt _headers 404.html
 docs/                   progress notes, test report, image sources, brand files, screenshots
 tests/                  automated browser tests (Playwright)
-tools/                  scripts that regenerate images and the single-file test copy
+tools/                  scripts that regenerate images, measure the demo stats and build the single-file test copy
 ```
 
 ## Editing
@@ -97,6 +103,8 @@ tools/                  scripts that regenerate images and the single-file test 
 - **Contact details** live in `public/js/site-config.js` *and* directly in the pages (so they work without JavaScript). Search and replace both.
 - **English and Greek are separate files.** When you change text, change `public/…` and `public/el/…`.
 - **Header or footer text** appears on every page: use *Edit → Replace in Files* in VS Code.
+- **Demo stats** on the project pages ("How we built it") come from `python tools/measure_demo.py`. Re-run it after changing a demo and update both languages.
+- **Privacy page:** if the site starts using cookies, analytics or a new outside service, update `public/privacy/` and `public/el/privacy/` first.
 - **Prices** appear on the homepage, the services page (both languages), the quote calculator (`public/js/forms.js`) and the AI assistant's knowledge (in the engine repository). Keep them in step.
 - **What the AI assistant knows** is edited in the [`pn-digital-ai-assistant`](https://github.com/tsiopouras/pn-digital-ai-assistant) repository, then exported into `public/assets/assistant/packs/`.
 

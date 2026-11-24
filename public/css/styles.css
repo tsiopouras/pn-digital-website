@@ -166,6 +166,9 @@ dialog.closing{animation:out .2s forwards}dialog.closing::backdrop{animation:fad
 .f-olive{background:linear-gradient(135deg,#2b2e22,#1b1e20)}.f-olive span{background:radial-gradient(circle at 35% 40%,#c9a86a 0 8%,transparent 9%),#23271b}
 .f-cut{background:#0b0b0b}.f-cut span{background:linear-gradient(#1b1b1b,#0b0b0b);border-color:#b3261e}
 .f-nex{background:#eef0f2}.f-nex span{background:#fff;border-color:#c7ccd2}
+.f-hotel{background:linear-gradient(180deg,#f3c29b 0 55%,#1f5f8b 55%)}.f-hotel span{background:radial-gradient(circle at 70% 46%,#fbf1de 0 9%,transparent 10%),linear-gradient(180deg,#f8e6cc,#f3c29b 55%,#174d73 55%);border-color:rgba(255,255,255,.55);border-radius:40% 40% 4px 4px/30% 30% 4px 4px}
+.legal h2{margin-top:2.6rem}.legal .lead{margin-bottom:.4rem}
+.f-salon{background:#f5e4e3}.f-salon span{background:radial-gradient(circle at 62% 38%,#6f8c74 0 6%,transparent 7%),radial-gradient(circle at 44% 58%,#6f8c74 0 6%,transparent 7%),radial-gradient(circle at 52% 48%,#4a2c3d 0 3%,transparent 4%),#fbeff0;border-color:#8a3a5c;border-radius:50%}
 .feature h3{font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .5rem}.feature p{max-width:44ch}
 .svc-grid{list-style:none;margin:0 0 2rem;padding:0;display:grid;gap:0;grid-template-columns:1fr}
 @media(min-width:760px){.svc-grid{grid-template-columns:1fr 1fr}}

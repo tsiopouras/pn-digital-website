@@ -45,16 +45,25 @@ The original generator scripts no longer exist. Edit the files in this folder di
 - Website live on Cloudflare Pages: https://pn-digital-website.pages.dev (connected to GitHub; every push to `main` deploys).
 - AI assistant engine deployed by the owner as the Worker `pn-digital-assistant` (https://pn-digital-assistant.tsiopou3.workers.dev) with the GEMINI_API_KEY secret. The P&N Digital chat is live; the three demos stay in demo mode (no Claude key). The USAGE KV namespace (400/day cap) is NOT set up yet.
 
+## Hotel and salon demos, privacy page (2026-11-24)
+- Two new demos, each one self-contained file with hash pages, English + Greek (EN | ΕΛ switcher, ?lang=el, follows the portfolio language in previews) and the AI widget:
+  - Halcyon Bay, seaside hotel (`demos/halcyon-bay/`): rooms with view/feature filters and detail pop-ups, gallery pop-ups, experiences page with a sample day, 10-question FAQ, 7-step booking + confirmation with a month calendar (stays up to 14 nights), guests (max 4 per room), rooms that fit the group (some "not available" as demo data), rate (room only / B&B / half board, children under 12 half price), extras, details, review. The total appears once dates and a room are chosen.
+  - Myrtle Beauty Studio, beauty salon (`demos/myrtle/`): treatment categories, treatment filters (category, under 1 hour, no patch test), add-ons, team with days off, a three-question treatment finder, gift vouchers (nothing sold), 10-question FAQ, 7-step booking + confirmation where add-ons and specialists follow the treatment, closed Sunday/Monday, patch-test reminders.
+- Project pages (EN + EL) with "How we built it": images from `tools/wire.py`, stats from the new `tools/measure_demo.py`. The three older project pages were re-measured with the same tool (their demos had grown since: CSS rules and Greek strings changed slightly).
+- Work page, homepage (now "five concept websites", counter 5, two new feature cards), previews (`js/projects.js`), sitemap, test copy builder and README updated. Next-project chain: Olive & Oak → THE CUT → Nexora → Halcyon Bay → Myrtle → Olive & Oak.
+- Privacy page `/privacy/` + `/el/privacy/`, linked from every footer. It says only what the site really does: no cookies/analytics/trackers, the contact form and calculator open the visitor's own app, the quote estimate stays in the browser for one visit, Cloudflare hosting, the P&N chat uses the Gemini free tier (Google may keep messages, P&N stores nothing), demos send nothing, GDPR rights and the Cyprus data protection commissioner. Owner to confirm the sentence about keeping messages "for our business records".
+- AI assistants: `halcyon-bay` and `myrtle` business files in the engine repo (rooms/rates/extras, treatments/add-ons/team, FAQs). The widget's demo mode answers rooms, rates, extras, treatment categories and "who does…" questions. Only businesses with `"live": true` (P&N Digital) get the engine address in their pack, so every demo stays in demo mode and sends nothing (before this, the first demo message went to the engine and came back "not switched on").
+
 ## NOT done
-- Owner decision (2026-11-23): no founder photo. The photo placeholder and its note were removed from the "One person" section (EN + EL); the section is now one column. The owner is a native Greek speaker and will review the Greek.
-2. Pictures and reviews for the agency site (drawn mockups and a placeholder founder photo are used). No real photography (no internet in the build environment). Real reviews must come from real clients.
-3. Native-speaker review of all Greek. Prompt extras: browser toolbar in the preview modal, Open Graph image, real domain and contact details, Cloudflare deployment (needs your login and approval).
+- Owner decision (2026-11-23): no founder photo. The photo placeholder and its note were removed from the "One person" section (EN + EL); the section is now one column. The owner is a native Greek speaker and will review the Greek, including the two new demos.
+- Real client reviews and photos: only when real clients exist.
+- The 400-a-day cap for the live chat needs the `USAGE` KV namespace (engine repo README, step 3).
+- Optional: a custom domain instead of pn-digital-website.pages.dev; Google Business Profile and Search Console.
 
 ## Tests
-See `TEST-REPORT.md`: 1,269 checks, all passing in the final run, in real Chromium. Not tested: real touch devices, other browsers, the deployed site.
+`tests/`: test_site, test_contact_quote, test_demo_i18n (now includes a Greek sweep of every page and booking step of the two new demos), test_assistant, test_hosted. Engine: `cd ../pn-digital-ai-assistant/engine && npm test`. Not tested: real touch devices, other browsers, the live chat on the deployed site.
 
 ## Exact next steps
-1. Greek for Olive & Oak, then THE CUT (Nexora pattern, leak detector, test inside Greek previews).
-2. Pictures and reviews (needs internet or user-supplied licensed photos; sample reviews labelled fictional).
-3. Native-speaker Greek review; then deployment with approval.
-4. Re-run every suite and update this file.
+1. Owner: read the Greek of the new demos and pages and send corrections.
+2. Owner: confirm the privacy page wording, then add the USAGE KV namespace for the daily cap.
+3. Optional: custom domain, Google Business Profile, Search Console.

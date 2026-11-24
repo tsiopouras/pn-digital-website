@@ -83,7 +83,7 @@ with sync_playwright() as p:
     pg.goto(O+'/'); pg.wait_for_timeout(200)
     chk('home: "Estimate your price" links to the calculator', pg.get_attribute('.q-cta a','href')=='/services/#quote')
     # build section
-    for path in ('/projects/olive-and-oak/','/el/projects/the-cut/','/projects/nexora-business-solutions/'):
+    for path in ('/projects/olive-and-oak/','/el/projects/the-cut/','/projects/nexora-business-solutions/','/projects/halcyon-bay/','/el/projects/myrtle-beauty-studio/'):
         pg.goto(O+path); pg.wait_for_timeout(300)
         n=pg.eval_on_selector_all('.b-stats .count','e=>e.map(x=>+x.dataset.to)'); steps=pg.locator('.b-steps li').count()
         chk(f'{path}: build section with 5 real stats and 6 steps', len(n)==5 and all(x>0 for x in n) and n[4]==6 and steps==6, (n,steps))

@@ -1,6 +1,6 @@
 """Builds the single-file test copy of the site (for the claude.ai test link).
 
-Every page of public/ becomes a hidden section; links become #routes; the three demos
+Every page of public/ becomes a hidden section; links become #routes; the five demos
 are embedded and shown with srcdoc. "Open full website" opens a full-screen view of the real
 demo inside the page (#full-<slug>), because a sandboxed artifact page cannot open temporary
 blob: links in a new tab. The real site (zip) still opens /demos/<name>/ in a new tab.
@@ -12,9 +12,9 @@ ROOT = _p.Path(__file__).resolve().parents[1]
 SITE = str(ROOT / 'public')
 (ROOT / 'tests' / 'output').mkdir(exist_ok=True)
 OUT = str(ROOT / 'tests' / 'output' / 'pn-digital-preview.html')
-DEMO_DIR = {'olive-and-oak': 'olive-and-oak', 'the-cut': 'the-cut', 'nexora-business-solutions': 'nexora'}
-NAMES = {'olive-and-oak': 'Olive & Oak', 'the-cut': 'THE CUT', 'nexora-business-solutions': 'Nexora Business Solutions'}
-PAGE_RE = r'^(/el)?/(?:(work|services|about|contact)/|projects/([a-z-]+)/)?$'
+DEMO_DIR = {'olive-and-oak': 'olive-and-oak', 'the-cut': 'the-cut', 'nexora-business-solutions': 'nexora', 'halcyon-bay': 'halcyon-bay', 'myrtle-beauty-studio': 'myrtle'}
+NAMES = {'olive-and-oak': 'Olive & Oak', 'the-cut': 'THE CUT', 'nexora-business-solutions': 'Nexora Business Solutions', 'halcyon-bay': 'Halcyon Bay', 'myrtle-beauty-studio': 'Myrtle Beauty Studio'}
+PAGE_RE = r'^(/el)?/(?:(work|services|about|contact|privacy)/|projects/([a-z-]+)/)?$'
 
 
 def rd(p):

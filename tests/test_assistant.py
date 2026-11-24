@@ -52,6 +52,21 @@ CASES = [  # page, lang, question, must contain (any of), must not contain
  ('/demos/nexora/', 'en', 'What does process improvement include?', ['Process improvement'], []),
  ('/demos/nexora/', 'en', 'How is pricing handled?', ['depend on scope'], []),
  ('/demos/nexora/?lang=el', 'el', 'Πώς υποβάλλω αίτημα;', ['επτά βημάτων'], []),
+ ('/demos/halcyon-bay/', 'en', 'Which rooms have a sea view?', ['Sea View Double', '€130', 'Rooftop Loft Suite'], ['Family Suite', 'Garden Double']),
+ ('/demos/halcyon-bay/', 'en', 'Is breakfast included?', ['€14', 'half board'], []),
+ ('/demos/halcyon-bay/', 'en', 'Do you have family rooms?', ['Family Suite', 'sleeps up to 4'], ['Rooftop Loft Suite']),
+ ('/demos/halcyon-bay/', 'en', 'How much is the Family Suite?', ['€210', 'Two connected rooms'], []),
+ ('/demos/halcyon-bay/', 'en', 'Can you arrange an airport transfer?', ['€45'], []),
+ ('/demos/halcyon-bay/', 'en', 'Is this hotel real?', ['fictional'], []),
+ ('/demos/halcyon-bay/?lang=el', 'el', 'Ποια δωμάτια έχουν θέα θάλασσα;', ['Δίκλινο με θέα θάλασσα', '€130'], ['Οικογενειακή σουίτα']),
+ ('/demos/halcyon-bay/?lang=el', 'el', 'Περιλαμβάνεται πρωινό;', ['€14'], []),
+ ('/demos/myrtle/', 'en', 'How much is a gel manicure?', ['Gel manicure', '€28', '50 min'], ['Classic manicure']),
+ ('/demos/myrtle/', 'en', 'Who does lash lifts?', ['Christina', 'Friday'], ['Sofia', 'Maria']),
+ ('/demos/myrtle/', 'en', 'Do I need a patch test?', ['48 hours'], []),
+ ('/demos/myrtle/', 'en', 'What nail treatments do you have?', ['Classic manicure', 'Gel manicure', 'Spa pedicure'], ['Balayage', 'Nail art']),
+ ('/demos/myrtle/', 'en', 'How long is a hot stone massage?', ['75 min'], []),
+ ('/demos/myrtle/?lang=el', 'el', 'Πόσο κοστίζει το ημιμόνιμο μανικιούρ;', ['€28', '50 λεπτά'], []),
+ ('/demos/myrtle/?lang=el', 'el', 'Ποια κάνει ανόρθωση βλεφαρίδων;', ['Χριστίνα'], ['Σοφία']),
 ]
 try:
   with sync_playwright() as pw:
@@ -69,7 +84,9 @@ try:
       return c
     br.new_context = new_context
     packs = {n: open(f'{SITE}/assets/assistant/packs/{n}', encoding='utf-8').read() for n in os.listdir(f'{SITE}/assets/assistant/packs')}
-    chk('published packs all point at the deployed engine over https', packs and all(re.search(r'"endpoint":"https://[^"]+/chat"', s) for s in packs.values()), {n: re.findall(r'"endpoint":"[^"]*"', s) for n, s in packs.items()})
+    eps = {n: re.findall(r'"endpoint":"([^"]*)"', s) for n, s in packs.items()}
+    chk('the P&N pack points at the deployed engine over https', re.fullmatch(r'https://[^"]+/chat', (eps.get('pn-digital.js') or [''])[0]), eps)
+    chk('every demo pack has no engine address, so demos stay in demo mode and send nothing', len(eps) >= 6 and all(v == [''] for n, v in eps.items() if n != 'pn-digital.js'), eps)
     # ---- demo mode answers (every business, both languages)
     for (w, h) in ((1440, 900), (390, 844)):
       c = br.new_context(viewport={'width': w, 'height': h}); p = c.new_page(); errs = []
@@ -144,8 +161,8 @@ try:
     chk('the demo’s translation layer leaves the assistant alone (no double translation)', p.evaluate("document.getElementById('pn-ai-host').hasAttribute('data-no-i18n')"))
     c.close()
     # ---- booking controls are never covered (THE CUT and Olive & Oak on phones)
-    for d, sel in (('the-cut', '#wiz [data-a=next]'), ('olive-and-oak', '#wiz [data-a=next]')):
-      c = br.new_context(viewport={'width': 375, 'height': 812}); p = c.new_page(); p.goto(O + f'/demos/{d}/#' + ('book' if d == 'the-cut' else 'reserve')); p.wait_for_timeout(500)
+    for d, sel in (('the-cut', '#wiz [data-a=next]'), ('olive-and-oak', '#wiz [data-a=next]'), ('halcyon-bay', '#wiz [data-a=next]'), ('myrtle', '#wiz [data-a=next]')):
+      c = br.new_context(viewport={'width': 375, 'height': 812}); p = c.new_page(); p.goto(O + f'/demos/{d}/#' + ('reserve' if d == 'olive-and-oak' else 'book')); p.wait_for_timeout(500)
       p.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)"); p.wait_for_timeout(300)
       b = p.locator(sel).bounding_box(); lb = p.locator('#pn-ai-host .launcher').bounding_box()
       overlap = not (b['x'] + b['width'] <= lb['x'] or lb['x'] + lb['width'] <= b['x'] or b['y'] + b['height'] <= lb['y'] or lb['y'] + lb['height'] <= b['y'])

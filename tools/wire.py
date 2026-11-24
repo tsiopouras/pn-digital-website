@@ -18,7 +18,7 @@ main *:has(> svg[viewBox$="200"]),main *:has(> svg[viewBox$="220"]),main *:has(>
 main *:has(> svg[viewBox$="200"]) *,main *:has(> svg[viewBox$="220"]) *,main *:has(> svg[viewBox$="240"]) *,[class~=art] *,[class*=-art] *,[class*=hero-art] *,figure *,[class*=photo] *,[class*=visual] *,[class*=illus] *{visibility:hidden!important}'''
 with sync_playwright() as p:
     b=p.chromium.launch(args=['--no-sandbox'])
-    for slug,d in (('olive-and-oak','olive-and-oak'),('the-cut','the-cut'),('nexora-business-solutions','nexora')):
+    for slug,d in (('olive-and-oak','olive-and-oak'),('the-cut','the-cut'),('nexora-business-solutions','nexora'),('halcyon-bay','halcyon-bay'),('myrtle-beauty-studio','myrtle')):
         pg=b.new_page(viewport={'width':1280,'height':800},device_scale_factor=1)
         pg.emulate_media(reduced_motion='reduce')
         pg.goto(f'http://127.0.0.1:5613/demos/{d}/'); pg.wait_for_timeout(1200)

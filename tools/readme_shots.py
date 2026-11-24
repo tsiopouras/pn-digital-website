@@ -21,7 +21,7 @@ with sync_playwright() as p:
     pg.goto(O + '/projects/olive-and-oak/'); pg.add_style_tag(content=CALM); pg.wait_for_timeout(300); pg.click('[data-preview]'); pg.wait_for_timeout(2500); shot(pg, 'live-preview')
     pg.goto(O + '/'); pg.wait_for_timeout(600); pg.locator('#pn-ai-host .launcher').click(); pg.wait_for_timeout(500)
     h = pg.locator('#pn-ai-host'); h.locator('textarea').fill('How much does a website cost?'); h.locator('textarea').press('Enter'); pg.wait_for_timeout(1200); shot(pg, 'ai-assistant')
-    for d in ('olive-and-oak', 'the-cut', 'nexora'):
+    for d in ('olive-and-oak', 'the-cut', 'nexora', 'halcyon-bay', 'myrtle'):
         pg.goto(O + f'/demos/{d}/'); pg.wait_for_timeout(1500); pg.add_style_tag(content='#pn-ai-host{display:none}'); shot(pg, f'demo-{d}')
     ph = b.new_page(viewport={'width': 390, 'height': 844}, device_scale_factor=2)
     ph.goto(O + '/el/'); ph.wait_for_timeout(2200); shot(ph, 'home-phone-greek')

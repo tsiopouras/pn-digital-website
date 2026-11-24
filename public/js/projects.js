@@ -22,6 +22,18 @@ window.PN = {
         "status": "live",
         "production": "/demos/nexora/",
         "local": ""
+    },
+    "halcyon-bay": {
+        "name": "Halcyon Bay",
+        "status": "live",
+        "production": "/demos/halcyon-bay/",
+        "local": ""
+    },
+    "myrtle-beauty-studio": {
+        "name": "Myrtle Beauty Studio",
+        "status": "live",
+        "production": "/demos/myrtle/",
+        "local": ""
     }
 },
   url: function (slug) {

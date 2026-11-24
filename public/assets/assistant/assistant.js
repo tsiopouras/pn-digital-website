@@ -138,6 +138,7 @@
     var f0 = faqMatch(n);
     if (f0 && f0.score >= 2) return { text: L(f0.f.a), link: f0.f.link }; // a strong FAQ match (two or more keywords) wins over generic lists
     if ((r = menuAnswer(n, lg))) return r;
+    if ((r = stayAnswer(n, lg))) return r;
     if ((r = serviceAnswer(n, lg))) return r;
     if (f0) return { text: L(f0.f.a), link: f0.f.link };
     return null;
@@ -168,8 +169,33 @@
     if (has(n, ['menu', 'μενου', 'dishes', 'πιατα', 'food', 'φαγητ'])) return { text: lg === 'el' ? 'Το μενού επίδειξης έχει ορεκτικά, κυρίως πιάτα, θαλασσινά, ζυμαρικά, επιδόρπια και ποτά (' + D.length + ' πιάτα).' : 'The demo menu has starters, mains, seafood, pasta, desserts and drinks (' + D.length + ' dishes).', link: '#menu' };
     return null;
   }
+  function stayAnswer(n, lg) {
+    var RM = K.rooms, RT = K.rates || [], XS = K.extras || []; if (!RM) return null;
+    var el = lg === 'el';
+    function rl(r) { return L(r.name) + ' — ' + (el ? 'από ' + r.price + ' τη νύχτα · έως ' + r.sleeps + ' άτομα' : 'from ' + r.price + ' a night · sleeps up to ' + r.sleeps); }
+    var hit = RM.filter(function (r) { return n.indexOf(norm(L(r.name))) >= 0 || n.indexOf(norm(r.name.en)) >= 0; });
+    if (hit.length === 1) { var r = hit[0]; return { text: L(r.name) + ' — ' + (el ? 'από ' + r.price + ' τη νύχτα (ενδεικτικά)' : 'from ' + r.price + ' a night (sample)') + '\n' + L(r.description) + '\n' + (el ? 'Έως ' + r.sleeps + ' άτομα' : 'Sleeps up to ' + r.sleeps) + ' · ' + r.size + ' · ' + L(r.beds) + '\n' + (L(r.features) || []).join(', '), link: '#book' }; }
+    var xs = XS.filter(function (x) { return (x.keywords || []).some(function (k) { return n.indexOf(norm(k)) >= 0; }); });
+    if (xs.length) return { text: el ? 'Πρόσθετα επίδειξης που μπορείτε να προσθέσετε στην κράτηση:' : 'Demo extras you can add when you book:', list: xs.map(function (x) { return L(x.name) + ' — ' + L(x.price); }), link: '#book' };
+    if (XS.length && has(n, ['extras', 'experience', 'activit', 'things to do', 'what can we do', 'εμπειρ', 'δραστηριοτ', 'προσθετ', 'τι μπορουμε να κανουμε'])) return { text: el ? 'Πρόσθετα και εμπειρίες επίδειξης:' : 'Demo extras and experiences:', list: XS.map(function (x) { return L(x.name) + ' — ' + L(x.price); }), link: '#experiences' };
+    if (RT.length && has(n, ['rate', 'board', 'breakfast', 'dinner', 'meal', 'πρωινο', 'διατροφ', 'δειπνο', 'γευμα'])) return { text: el ? 'Επιλογές διατροφής (ενδεικτικές τιμές):' : 'Rate options (sample prices):', list: RT.map(function (x) { return L(x.name) + ' — ' + L(x.price); }), link: '#book' };
+    var want = has(n, ['family', 'families', 'kids', 'children', 'three of us', 'four of us', 'οικογεν', 'παιδια', 'παιδι ', 'τρια ατομα', 'τεσσερα ατομα']) ? function (x) { return x.sleeps >= 3; }
+      : has(n, ['accessib', 'wheelchair', 'step-free', 'step free', 'προσβασ', 'αμαξιδ', 'σκαλοπατ']) ? function (x) { return x.accessible; }
+      : has(n, ['sea', 'θαλασσ']) ? function (x) { return x.view === 'sea'; } : has(n, ['garden', 'κηπ']) ? function (x) { return x.view === 'garden'; } : null;
+    if (want && has(n, ['room', 'suite', 'stay', 'sleep', 'view', 'δωματ', 'σουιτ', 'διαμον', 'θεα', 'φιλοξεν', 'family', 'οικογεν'])) return { text: el ? 'Δωμάτια επίδειξης που ταιριάζουν:' : 'Demo rooms that fit:', list: RM.filter(want).map(rl), link: '#rooms' };
+    if (has(n, ['room', 'suite', 'price', 'cost', 'how much', 'night', 'δωματ', 'σουιτ', 'τιμ', 'κοστιζ', 'ποσο', 'νυχτα'])) return { text: el ? 'Δωμάτια επίδειξης (ενδεικτικές τιμές ανά νύχτα):' : 'Demo rooms (sample prices per night):', list: RM.map(rl), link: '#rooms' };
+    return null;
+  }
+  // salon: which category a question is about (brows first, so "brow tint" is not read as hair colour)
+  var CATW = { brows: ['brow', 'lash', 'φρυδ', 'βλεφαρ'], nails: ['nail', 'manicure', 'pedicure', 'νυχ', 'μανικιουρ', 'πεντικιουρ', 'ημιμονιμ'], massage: ['massage', 'μασαζ'], skin: ['facial', 'skin', 'face', 'προσωπ', 'δερμα'], hair: ['hair', 'colour', 'color', 'balayage', 'blow', 'μαλλ', 'κουρεμ', 'βαφη', 'μπαλαγιαζ', 'χτενισ'] };
+  function catOf(n) { for (var c in CATW) if (has(n, CATW[c])) return c; return null; }
   function serviceAnswer(n, lg) {
-    var S = K.services, A = K.addons || [], P = K.pricing, BB = K.barbers;
+    var S = K.services, A = K.addons || [], P = K.pricing, BB = K.barbers, TM = K.team;
+    if (TM && has(n, ['who', 'specialist', 'stylist', 'therapist', 'team', 'staff', 'ειδικ', 'ομαδα', 'ποια ', 'ποιος', 'κομμωτρ', 'αισθητικ'])) {
+      var tc = catOf(n), pk = tc ? TM.filter(function (x) { return x.categories.indexOf(tc) >= 0; }) : [];
+      if (pk.length) return { text: (lg === 'el' ? 'Ταιριάζει: ' : 'A good match: ') + pk.map(function (x) { return L(x.name) + ' — ' + L(x.specialty) + (lg === 'el' ? ' (ρεπό: ' : ' (day off: ') + L(x.dayOff) + ').'; }).join(' ') + (lg === 'el' ? ' Φανταστικά προφίλ επίδειξης.' : ' Fictional demo profiles.'), link: '#book' };
+      return { text: lg === 'el' ? 'Η ομάδα (φανταστικά προφίλ):' : 'The team (fictional profiles):', list: TM.map(function (x) { return L(x.name) + ' — ' + L(x.specialty); }), link: '#team' };
+    }
     if (BB && has(n, ['barber', 'κουρεα', 'κουρεισ', 'κουρεων'])) {
       var pickB = has(n, ['beard', 'shave', 'γενει', 'ξυρισ']) ? 'nikos' : has(n, ['kid', 'child', 'son', 'παιδ', 'γιο']) ? 'eleni' : has(n, ['fade', 'taper', 'φειντ', 'ντεγκραντε']) ? 'andreas' : null;
       if (pickB) { var b = BB.filter(function (x) { return x.id === pickB; })[0]; return { text: (lg === 'el' ? 'Ταιριάζει: ' : 'A good match: ') + L(b.name) + ' — ' + L(b.specialty) + '. ' + L(b.bio) + (lg === 'el' ? ' (Φανταστικό προφίλ επίδειξης.)' : ' (Fictional demo profile.)'), link: '#book' }; }
@@ -177,8 +203,12 @@
     }
     if (S && S[0] && S[0].price) {
       var hit = S.concat(A).filter(function (s) { var nm = norm(L(s.name)), en = norm(s.name.en); return n.indexOf(nm) >= 0 || n.indexOf(en) >= 0 || nm.split(' ').concat(en.split(' ')).filter(function (w) { return w.length > 4 && ['haircut', 'κουρεμα'].indexOf(w) < 0; }).some(function (w) { return n.indexOf(w) >= 0; }); });
-      if (hit.length) return { text: lg === 'el' ? 'Από τις υπηρεσίες επίδειξης:' : 'From the demo services:', list: hit.map(function (s) { return L(s.name) + ' — ' + s.price + ' · ' + s.minutes + (lg === 'el' ? ' λεπτά' : ' min'); }), link: '#book' };
-      if (has(n, ['service', 'price', 'cost', 'how much', 'how long', 'υπηρεσ', 'τιμ', 'κοστιζ', 'ποσο'])) return { text: lg === 'el' ? 'Υπηρεσίες επίδειξης (ενδεικτικές τιμές και διάρκειες):' : 'Demo services (sample prices and durations):', list: S.map(function (s) { return L(s.name) + ' — ' + s.price + ' · ' + s.minutes + (lg === 'el' ? ' λεπτά' : ' min'); }), link: '#services' };
+      var exact = hit.filter(function (s) { return n.indexOf(norm(L(s.name))) >= 0 || n.indexOf(norm(s.name.en)) >= 0; }); if (exact.length) hit = exact; // "gel manicure" should not also list every other manicure
+      var sl = function (s) { return L(s.name) + ' — ' + s.price + ' · ' + s.minutes + (lg === 'el' ? ' λεπτά' : ' min') + (s.patchTest ? (lg === 'el' ? ' · χρειάζεται τεστ ευαισθησίας' : ' · patch test needed') : ''); };
+      var cat = S[0].category ? catOf(n) : null;
+      if (cat && !exact.length) return { text: lg === 'el' ? 'Θεραπείες επίδειξης σε αυτή την κατηγορία:' : 'Demo treatments in this category:', list: S.filter(function (s) { return s.category === cat; }).map(sl), link: '#treatments' };
+      if (hit.length) return { text: lg === 'el' ? 'Από τις υπηρεσίες επίδειξης:' : 'From the demo services:', list: hit.map(sl), link: '#book' };
+      if (has(n, ['service', 'treatment', 'price', 'cost', 'how much', 'how long', 'υπηρεσ', 'θεραπει', 'τιμ', 'κοστιζ', 'ποσο'])) return { text: lg === 'el' ? 'Υπηρεσίες επίδειξης (ενδεικτικές τιμές και διάρκειες):' : 'Demo services (sample prices and durations):', list: S.map(sl), link: S[0].category ? '#treatments' : '#services' };
     }
     if (S && S[0] && S[0].summary) {
       var hs = S.filter(function (s) { return norm(L(s.name)).split(' ').concat(norm(s.name.en).split(' ')).filter(function (w) { return w.length > 5; }).some(function (w) { return n.indexOf(w) >= 0; }); });

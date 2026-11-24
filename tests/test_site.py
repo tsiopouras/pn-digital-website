@@ -21,7 +21,7 @@ def chk(n, ok, d=''):
         print('FAIL:', n, '|', str(d)[:200])
 
 
-EN = ['/', '/work/', '/services/', '/about/', '/contact/', '/projects/olive-and-oak/', '/projects/the-cut/', '/projects/nexora-business-solutions/']
+EN = ['/', '/work/', '/services/', '/about/', '/contact/', '/privacy/', '/projects/olive-and-oak/', '/projects/the-cut/', '/projects/nexora-business-solutions/', '/projects/halcyon-bay/', '/projects/myrtle-beauty-studio/']
 EL = ['/el' + p if p != '/' else '/el/' for p in EN]
 VPS = [(1920, 1080), (1440, 900), (1280, 800), (768, 1024), (390, 844), (375, 812)]
 LEAK = """(allow) => { const out=new Set(), rx=/[A-Za-z][A-Za-z&’'-]{2,}/g; const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n;
@@ -31,7 +31,8 @@ LEAK = """(allow) => { const out=new Set(), rx=/[A-Za-z][A-Za-z&’'-]{2,}/g; co
   return [...out] }"""
 ALLOW = ['Olive', 'Oak', 'THE', 'CUT', 'Nexora', 'Business', 'Solutions', 'P&N', 'Digital', 'Starter', 'Premium', 'SEO', 'JavaScript', 'responsive', 'Responsive',
          'domain', 'Landing', 'landing', 'pages', 'sitemap', 'tablet', 'account', 'managers', 'editorial', 'Editorial', 'demo', 'email', 'Email', 'workshops', 'brand',
-         'FAQ', 'English', 'Demo', 'Google', 'Gemini', 'WhatsApp', 'pndigitalwebsites', 'gmail', 'com', 'CSS', 'serif', 'sans-serif', 'pixel', 'fade']
+         'FAQ', 'English', 'Demo', 'Google', 'Gemini', 'WhatsApp', 'pndigitalwebsites', 'gmail', 'com', 'CSS', 'serif', 'sans-serif', 'pixel', 'fade',
+         'Halcyon', 'Bay', 'Myrtle', 'Beauty', 'Studio', 'Cloudflare', 'cookies']
 PAGE = """() => ({w:document.documentElement.scrollWidth, iw:innerWidth, lang:document.documentElement.lang, h1:document.querySelectorAll('h1').length,
   imgs:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).length, unnamed:[...document.querySelectorAll('a,button')].filter(e=>!e.closest('dialog')&&!e.hidden&&getComputedStyle(e).display!=='none'&&!(e.textContent.trim()||e.getAttribute('aria-label'))).length})"""
 try:
@@ -56,6 +57,17 @@ try:
             p.goto(B + path); p.wait_for_timeout(150); p.evaluate("document.querySelectorAll('#faq button.q').forEach(b=>b.click())"); p.wait_for_timeout(300)
             lk = p.evaluate(LEAK, ALLOW); chk(f'{path}: no English text in the Greek page', not lk, lk[:8])
             sw = p.evaluate("document.querySelector('li.lang a').getAttribute('href')"); chk(f'{path}: switcher points to the same page in English', sw == (path[3:] or '/'), sw)
+        c.close()
+        # 2b. every page links to the privacy page in its own language; the privacy page states the key facts
+        c = br.new_context(viewport={'width': 1440, 'height': 900}); p = c.new_page()
+        for path in EN + EL + ['/404.html']:
+            p.goto(B + path); want = '/el/privacy/' if path.startswith('/el') else '/privacy/'
+            chk(f'{path}: footer links to the privacy page ({want})', p.locator(f'footer a[href="{want}"]').count() == 1)
+        for path, facts in (('/privacy/', ('no cookies', 'Gemini', 'Cloudflare', 'pndigitalwebsites@gmail.com', 'demo mode')), ('/el/privacy/', ('cookies', 'Gemini', 'Cloudflare', 'pndigitalwebsites@gmail.com', 'λειτουργία επίδειξης'))):
+            p.goto(B + path); t = p.inner_text('main')
+            chk(f'{path}: states the facts (cookies, AI provider, host, contact, demos send nothing)', all(x in t for x in facts), [x for x in facts if x not in t])
+        p.goto(B + '/'); chk('homepage counts five concept websites', p.get_attribute('.facts .count', 'data-to') == '5' and p.locator('.feature-list .feature').count() == 5)
+        p.goto(B + '/work/'); chk('work page lists five projects with previews', p.locator('article.row').count() == 5 and p.locator('[data-preview]').count() == 5)
         c.close()
         # 3. navigation + CTAs
         c = br.new_context(viewport={'width': 1440, 'height': 900}); p = c.new_page()
@@ -83,7 +95,7 @@ try:
             L = 'el' if lp.startswith('/el') else 'en'
             for w in (1440, 390):
                 c = br.new_context(viewport={'width': w, 'height': 900}); p = c.new_page(); bag = []; p.on('pageerror', lambda e: bag.append(str(e)))
-                for slug, d in (('olive-and-oak', 'olive-and-oak'), ('the-cut', 'the-cut'), ('nexora-business-solutions', 'nexora')):
+                for slug, d in (('olive-and-oak', 'olive-and-oak'), ('the-cut', 'the-cut'), ('nexora-business-solutions', 'nexora'), ('halcyon-bay', 'halcyon-bay'), ('myrtle-beauty-studio', 'myrtle')):
                     p.goto(B + lp); p.locator(f'[data-preview="{slug}"]').first.focus(); p.keyboard.press('Enter')
                     p.wait_for_function("document.querySelector('#pv-msg').hidden===true", timeout=9000); p.wait_for_timeout(300)
                     fr = p.query_selector('#pv iframe').content_frame()
@@ -106,7 +118,8 @@ try:
                     n = np.value; n.wait_for_load_state(); chk(f'[{L} {w}] {slug}: project page "Open full website" works in {L}', n.url.replace(B, '').startswith(f'/demos/{d}/') and n.evaluate('document.documentElement.lang') == L, n.url); n.close()
                 chk(f'[{L} {w}] previews: no page errors', not bag, bag[:2]); c.close()
         # 6. demos opened directly
-        for d, pages in (('olive-and-oak', ('home', 'menu', 'reserve')), ('the-cut', ('home', 'services', 'barbers', 'book')), ('nexora', ('home', 'services', 'cases', 'enquire'))):
+        for d, pages in (('olive-and-oak', ('home', 'menu', 'reserve')), ('the-cut', ('home', 'services', 'barbers', 'book')), ('nexora', ('home', 'services', 'cases', 'enquire')),
+                         ('halcyon-bay', ('home', 'rooms', 'experiences', 'book')), ('myrtle', ('home', 'treatments', 'team', 'book'))):
             for (w, h) in ((1440, 900), (390, 844), (375, 812)):
                 for q in ('', '?lang=el'):
                     c = br.new_context(viewport={'width': w, 'height': h}); p = c.new_page(); bag = []
