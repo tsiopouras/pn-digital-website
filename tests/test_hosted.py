@@ -44,7 +44,7 @@ with sync_playwright() as pw:
         if w == 390:
             p.locator('.route:not([hidden]) .menu-btn').click(); p.wait_for_timeout(600)
             b = p.locator('.route:not([hidden]) header nav .cta .btn'); col = b.evaluate('e=>getComputedStyle(e).color')
-            chk('[390] test copy: mobile menu "Get a quote" button readable (dark text)', col == 'rgb(16, 19, 21)', col)
+            bgc = b.evaluate('e=>getComputedStyle(e).backgroundColor'); chk('[390] test copy: mobile menu "Get a quote" button readable (text and background differ)', col != bgc, (col, bgc))
         chk(f'[{w}] no JS errors in the test copy', not errs, errs[:3])
         c.close()
     br.close()

@@ -53,7 +53,7 @@ for f in sorted(glob.glob(SITE + '/**/index.html', recursive=True)):
     inner = re.sub(r'href="(/[^"]*)"', lambda mm: f'href="#{route(mm.group(1))}"' if route(mm.group(1)) else mm.group(0), inner)
     secs.append(f'<div class="route" data-route="{route(path)}" data-lang="{lang}" data-title="{html.escape(title)}" hidden>{inner}</div>')
 
-css = rd('css/styles.css')
+css = rd('css/styles.css') + (rd('css/refresh.css') if '/css/refresh.css' in rd('index.html') else '')  # the style refresh, while it is switched on
 js = ''.join(rd(f'js/{n}.js') + '\n' for n in ('site-config', 'projects', 'preview', 'main', 'forms', 'fx'))
 LINKMAP = r'''window.PN_ASSISTANT_LINK=function(href,lang){if(href.charAt(0)==='#')return href;var m=href.match(/^(\/el)?\/(?:(work|services|about|contact)\/|projects\/([a-z-]+)\/)?(#.*)?$/);if(!m)return href;var pre=(lang==='el'||m[1])?'el-':'';return '#'+pre+(m[2]||(m[3]?'project-'+m[3]:'home'));};'''
 agency_ai = pack('pn-digital').replace('</', '<\\/') + "window.PN_ASSISTANT_ID='pn-digital';\n" + LINKMAP + '\n'

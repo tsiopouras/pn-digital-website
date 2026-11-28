@@ -1,4 +1,18 @@
 (function () {
+  // Light / dark theme: the header button switches it, the choice is remembered in this browser only.
+  (function () {
+    var root = document.documentElement, btns = document.querySelectorAll('.theme-btn');
+    function sync() { var on = root.dataset.theme === 'light'; [].forEach.call(btns, function (b) { b.setAttribute('aria-pressed', String(on)); }); }
+    [].forEach.call(btns, function (b) {
+      b.addEventListener('click', function () {
+        var on = root.dataset.theme !== 'light';
+        if (on) root.dataset.theme = 'light'; else delete root.dataset.theme;
+        try { localStorage.setItem('pn-theme', on ? 'light' : 'dark'); } catch (e) { /* private mode: works for this page only */ }
+        sync();
+      });
+    });
+    sync();
+  })();
   var ST = {"en": {"live": "Working demo", "local": "Local preview", "in-progress": "Work in progress", "coming-soon": "Coming soon"}, "el": {"live": "Λειτουργικό demo", "local": "Τοπική προεπισκόπηση", "in-progress": "Σε εξέλιξη", "coming-soon": "Σύντομα"}};
   var cfg = window.PN_SITE || {};
   function lang() { return document.documentElement.lang === 'el' ? 'el' : 'en'; }

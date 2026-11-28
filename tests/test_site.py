@@ -33,6 +33,11 @@ ALLOW = ['Olive', 'Oak', 'THE', 'CUT', 'Nexora', 'Business', 'Solutions', 'P&N',
          'domain', 'Landing', 'landing', 'pages', 'sitemap', 'tablet', 'account', 'managers', 'editorial', 'Editorial', 'demo', 'email', 'Email', 'workshops', 'brand',
          'FAQ', 'English', 'Demo', 'Google', 'Gemini', 'WhatsApp', 'pndigitalwebsites', 'gmail', 'com', 'CSS', 'serif', 'sans-serif', 'pixel', 'fade',
          'Halcyon', 'Bay', 'Myrtle', 'Beauty', 'Studio', 'Cloudflare', 'cookies']
+# Contrast ratio (WCAG) of an element's text against the first opaque background behind it.
+CONTRAST = """(sel) => { const el = document.querySelector(sel); if (!el) return null;
+  const rgb = c => (c.match(/[\\d.]+/g) || []).map(Number), lum = ([r, g, b]) => { const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4 }; return .2126 * f(r) + .7152 * f(g) + .0722 * f(b) };
+  let bg = null, e = el; while (e) { const c = rgb(getComputedStyle(e).backgroundColor); if (c.length >= 3 && (c.length < 4 || c[3] === 1)) { bg = c; break } e = e.parentElement }
+  bg = bg || [255, 255, 255]; const fg = rgb(getComputedStyle(el).color), a = lum(fg), b = lum(bg); return +((Math.max(a, b) + .05) / (Math.min(a, b) + .05)).toFixed(2) }"""
 PAGE = """() => ({w:document.documentElement.scrollWidth, iw:innerWidth, lang:document.documentElement.lang, h1:document.querySelectorAll('h1').length,
   imgs:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).length, unnamed:[...document.querySelectorAll('a,button')].filter(e=>!e.closest('dialog')&&!e.hidden&&getComputedStyle(e).display!=='none'&&!(e.textContent.trim()||e.getAttribute('aria-label'))).length})"""
 try:
@@ -69,6 +74,22 @@ try:
         p.goto(B + '/'); chk('homepage counts five concept websites', p.get_attribute('.facts .count', 'data-to') == '5' and p.locator('.feature-list .feature').count() == 5)
         p.goto(B + '/work/'); chk('work page lists five projects with previews', p.locator('article.row').count() == 5 and p.locator('[data-preview]').count() == 5)
         c.close()
+        # 2c. light mode: the header button switches the theme, it is remembered, and text stays readable
+        c = br.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); p = c.new_page()
+        for path in ('/', '/el/'):
+            p.goto(B + path); p.evaluate("localStorage.removeItem('pn-theme')"); p.reload(); tb = p.locator('header .theme-btn')
+            want = 'Φωτεινή λειτουργία' if path == '/el/' else 'Light mode'
+            chk(f'{path}: theme button labelled "{want}", dark by default', tb.count() == 1 and tb.text_content().strip() == want and tb.get_attribute('aria-pressed') == 'false' and p.evaluate("!document.documentElement.dataset.theme"))
+            tb.click(); chk(f'{path}: button switches to light mode', p.evaluate("document.documentElement.dataset.theme") == 'light' and tb.get_attribute('aria-pressed') == 'true')
+            p.goto(B + path.rstrip('/') + '/work/'); chk(f'{path}: light mode is remembered on the next page', p.evaluate("document.documentElement.dataset.theme") == 'light' and p.get_attribute('header .theme-btn', 'aria-pressed') == 'true')
+            p.locator('header .theme-btn').click(); chk(f'{path}: switching back to dark works', not p.evaluate("document.documentElement.dataset.theme"))
+        for path in EN + EL:
+            p.goto(B + path); p.evaluate("localStorage.setItem('pn-theme','light')"); p.reload(); p.wait_for_timeout(100)
+            for sel in ('main h1', 'main p', 'header nav a', 'header .theme-btn', '.btn', 'footer a'):
+                r = p.evaluate(CONTRAST, sel)
+                if r is not None: chk(f'[light] {path} {sel}: contrast at least 4.5', r >= 4.5, r)
+            chk(f'[light] {path}: no horizontal overflow', p.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'))
+        p.evaluate("localStorage.removeItem('pn-theme')"); c.close()
         # 3. navigation + CTAs
         c = br.new_context(viewport={'width': 1440, 'height': 900}); p = c.new_page()
         for pre in ('', '/el'):
@@ -83,10 +104,10 @@ try:
         for path, lab in (('/', 'Get a quote'), ('/el/', 'Ζητήστε προσφορά')):
             c = br.new_context(viewport={'width': 390, 'height': 844}); p = c.new_page(); p.goto(B + path); p.wait_for_timeout(2600)
             hh = p.evaluate("document.querySelector('.hero2 h1').getBoundingClientRect().height"); chk(f'{path} @390: headline flows normally (not one word per line)', hh < 260, hh)
-            chk(f'{path} @390: header bar solid', p.evaluate("getComputedStyle(document.querySelector('header.top')).backgroundColor") == 'rgb(16, 19, 21)')
+            hb = p.evaluate("getComputedStyle(document.querySelector('header.top')).backgroundColor"); chk(f'{path} @390: header bar solid', hb.startswith('rgb(') and 'rgba' not in hb, hb)
             p.click('.menu-btn'); p.wait_for_timeout(600)
             b = p.locator('header nav .cta .btn'); s = b.evaluate("e=>{const c=getComputedStyle(e);return [c.color,c.backgroundColor]}")
-            chk(f'{path} @390: menu quote button readable (dark text on ivory), label "{lab}"', s[0] != s[1] and s[0] == 'rgb(16, 19, 21)' and b.inner_text().strip() == lab, s)
+            chk(f'{path} @390: menu quote button readable (contrast at least 4.5), label "{lab}"', s[0] != s[1] and p.evaluate(CONTRAST, 'header nav .cta .btn') >= 4.5 and b.inner_text().strip() == lab, (s, p.evaluate(CONTRAST, 'header nav .cta .btn')))
             chk(f'{path} @390: menu opens', p.get_attribute('.menu-btn', 'aria-expanded') == 'true' and p.is_visible('header nav li.lang a'))
             p.keyboard.press('Escape'); p.wait_for_timeout(600); chk(f'{path} @390: Escape closes the menu', p.get_attribute('.menu-btn', 'aria-expanded') == 'false')
             c.close()

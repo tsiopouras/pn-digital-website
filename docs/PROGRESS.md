@@ -54,6 +54,11 @@ The original generator scripts no longer exist. Edit the files in this folder di
 - Privacy page `/privacy/` + `/el/privacy/`, linked from every footer. It says only what the site really does: no cookies/analytics/trackers, the contact form and calculator open the visitor's own app, the quote estimate stays in the browser for one visit, Cloudflare hosting, the P&N chat uses the Gemini free tier (Google may keep messages, P&N stores nothing), demos send nothing, GDPR rights and the Cyprus data protection commissioner. Owner to confirm the sentence about keeping messages "for our business records".
 - AI assistants: `halcyon-bay` and `myrtle` business files in the engine repo (rooms/rates/extras, treatments/add-ons/team, FAQs). The widget's demo mode answers rooms, rates, extras, treatment categories and "who does…" questions. Only businesses with `"live": true` (P&N Digital) get the engine address in their pack, so every demo stays in demo mode and sends nothing (before this, the first demo message went to the engine and came back "not switched on").
 
+## Light mode and style refresh (2026-11-28)
+- Light mode: a sun/moon button in the header of every page (EN "Light mode", EL "Φωτεινή λειτουργία"). High-contrast light colours in `css/styles.css` (`html[data-theme=light]`); hardcoded dark surfaces became theme colours (--card, --alt, --field, --fline, --qtint, --glow). The choice is stored in the browser (`pn-theme`), and the privacy page says so. Tests check the switch, memory and text contrast (4.5+) on every page in light mode.
+- Style refresh in `css/refresh.css` only: deep navy backgrounds, deep blue buttons (#2343c9), blue accents, Manrope headings and Inter text (self-hosted, OFL, Greek included). "Revert" = remove the refresh.css link from all pages; light mode keeps working with the old style (checked).
+- Not changed: the AI chat button still uses its teal brand colour (set in the engine's pn-digital.json branding).
+
 ## NOT done
 - Owner decision (2026-11-23): no founder photo. The photo placeholder and its note were removed from the "One person" section (EN + EL); the section is now one column. The owner is a native Greek speaker and will review the Greek, including the two new demos.
 - Real client reviews and photos: only when real clients exist.

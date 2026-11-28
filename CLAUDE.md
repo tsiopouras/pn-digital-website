@@ -9,6 +9,11 @@ beginner with developer tools: explain commands and technical ideas in plain wor
 - Every page exists in English (`public/…`) and Greek (`public/el/…`). Any text change must be made in both.
 - The five demos in `public/demos/` are single self-contained files with hash routing (`#home`, `#menu`, …). Their "How we built it"
   numbers come from `python tools/measure_demo.py`.
+- **Light mode** (header button, `html[data-theme=light]` in `css/styles.css`, remembered in localStorage `pn-theme`) is
+  permanent: the owner wants it kept whatever the style.
+- **Style refresh** (deep blue, Manrope + Inter, self-hosted in `public/fonts/`) lives only in `css/refresh.css`. If the
+  owner says **"revert"**, remove the `<link rel="stylesheet" href="/css/refresh.css">` line from every page (EN, EL, 404)
+  and keep light mode; the old look is git tag `style-before-refresh` (local) / commit 1d22faa.
 - `public/privacy/` (and `/el/privacy/`) must stay true: if the site adds cookies, analytics or an outside service, update it first.
 - The AI assistant engine is a separate repository, `pn-digital-ai-assistant`, normally cloned next to this one.
   Its exporter writes `public/assets/assistant/packs/*.js` here. Do not edit the packs by hand.
